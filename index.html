@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#121423">
+<title>RQN — Networks & Surveillance Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RQN — bilingual, English primary.
+
+   The whole point of this file: typography is set PER LANGUAGE,
+   not as one compromise.
+     en → IBM Plex Sans,        tracking -0.022em, leading 1.06
+     ar → IBM Plex Sans Arabic, tracking 0,        leading 1.45
+   Arabic is a joined script: negative tracking damages the
+   letter connections, and tight leading collides descenders
+   with the dots below them.
+
+   Both faces are from the IBM Plex superfamily, so the brand
+   holds its shape across the switch.
+   ============================================================ */
+:root{
+  color-scheme: dark;   /* without this, Android Chrome auto-dark
+                           inverts the page and it renders LIGHT */
+  /* ---- brand ------------------------------------------------
+     #9441BA  brand      → BACKGROUNDS only (4.86:1 with ink on top)
+     #A861C8  brand-text → the lightened tint for links / small text
+                           (4.53:1 on the background — the raw brand
+                            colour only reaches 3.24:1 and fails AA)
+     #121423  background → hue 233°, so every neutral below is built
+                           on 233° too. Nothing here is a flat grey.
+     ------------------------------------------------------------ */
+  --brand:#9441BA;
+  --brand-text:#A861C8;
+  --brand-deep:#7B369C;
+
+  --background:#121423;
+  --surface:#191B2A;
+  --muted:#212336;
+  --foreground:#EEEEEE;
+  --muted-foreground:#989BAE;
+  --faint:#65687B;          /* decorative only — 3.32:1, never body text */
+  --border:#313449;
+
+  --ok:#3E9C6A;             /* semantic, not brand */
+
+  --mono:"IBM Plex Mono", ui-monospace, monospace;
+  --r:8px;
+  --maxw:1152px;
+  --px:24px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth; background:#121423; background:var(--background)}
+body{
+  margin:0; background:#121423; background:var(--background);
+  color:#EEEEEE; color:var(--foreground);
+  font-size:15px; -webkit-font-smoothing:antialiased; overflow-x:clip;
+}
+h1,h2,h3,h4{margin:0; font-weight:500}
+p{margin:0}
+a{color:inherit; text-decoration:none}
+svg{display:block}
+::selection{background:var(--brand); color:var(--foreground)}
+
+/* ---------- PER-LANGUAGE TYPE SETTINGS ---------- */
+html[lang="en"] body{
+  font-family:"IBM Plex Sans", system-ui, sans-serif;
+  line-height:1.65; letter-spacing:0;
+}
+html[lang="en"] .h1{ line-height:1.06; letter-spacing:-.022em }
+html[lang="en"] .h2{ line-height:1.12; letter-spacing:-.022em }
+html[lang="en"] .lede{ line-height:1.45; letter-spacing:-.012em }
+html[lang="en"] .prose{ line-height:1.7 }
+
+html[lang="ar"] body{
+  font-family:"IBM Plex Sans Arabic", system-ui, sans-serif;
+  line-height:1.8; letter-spacing:0;
+}
+html[lang="ar"] .h1{ line-height:1.45; letter-spacing:0 }
+html[lang="ar"] .h2{ line-height:1.5;  letter-spacing:0 }
+html[lang="ar"] .lede{ line-height:1.85; letter-spacing:0 }
+html[lang="ar"] .prose{ line-height:1.9 }
+
+:where(a,button,input,select,textarea):focus-visible{
+  outline:2px solid var(--brand-text); outline-offset:2px; border-radius:4px;
+}
+
+.wrap{max-width:var(--maxw); margin-inline:auto; padding-inline:var(--px)}
+.mono{font-family:var(--mono); font-variant-numeric:tabular-nums}
+.mf{color:var(--muted-foreground)}
+
+/* ---------- load sequence: blur-in ---------- */
+@keyframes lp-hero-in{
+  from{opacity:0; filter:blur(14px); transform:translateY(14px)}
+  to  {opacity:1; filter:blur(0);    transform:none}
+}
+@keyframes lp-fade-in{
+  from{opacity:0; transform:translateY(10px)}
+  to  {opacity:1; transform:none}
+}
+.in{animation:lp-hero-in 1s cubic-bezier(.2,.6,.2,1) both}
+.up{animation:lp-fade-in .8s cubic-bezier(.2,.6,.2,1) both}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .in,.up{animation:none}
+  *{transition-duration:.01ms !important}
+}
+
+/* ---------- brand hairline ----------
+   Replaces the old four-strand cable ribbon: the brand purple is
+   strong enough that a second colour system fights it. One line. */
+.strands{height:2px; background:var(--brand)}
+
+/* ---------- logo ----------
+   Supplied flat #121423 — identical to the site background, so it was
+   invisible. Fills are now currentColor and it inherits its context.
+
+   The Arabic and Latin wordmarks INTERLOCK vertically (Arabic y142–296,
+   Latin y266–299): the Latin sits in the negative space under the left
+   of the Arabic. There is no separable icon here, so the lockup is used
+   whole and the header is sized around it instead. */
+.brand{display:inline-flex; align-items:center; color:var(--foreground); transition:color .18s}
+.brand:hover{color:var(--brand-text)}
+.mark{height:40px; width:auto; display:block}
+.foot-logo{display:block; color:var(--faint)}
+.lockup{height:56px; width:auto; display:block}
+@media(max-width:520px){ .mark{height:32px} }
+
+/* ---------- header ---------- */
+.head{position:sticky; top:0; z-index:60; background:rgba(18,20,35,.86); background:color-mix(in srgb,var(--background) 82%,transparent); backdrop-filter:blur(12px); border-block-end:1px solid var(--border)}
+.head-in{max-width:var(--maxw); margin-inline:auto; padding-inline:var(--px); height:72px; display:flex; align-items:center; position:relative}
+.brand{font-family:var(--mono); font-size:16px; font-weight:500; letter-spacing:.2em}
+.nav{position:absolute; inset-inline-start:50%; display:flex; gap:28px}
+html[dir="ltr"] .nav{transform:translateX(-50%)}
+html[dir="rtl"] .nav{transform:translateX(50%)}
+.nav a{font-size:13px; font-weight:500; color:var(--muted-foreground); padding:4px 8px; margin:0 -8px; border-radius:6px; transition:color .18s}
+.nav a:hover{color:var(--foreground)}
+.head-act{margin-inline-start:auto; display:flex; align-items:center; gap:10px}
+@media(max-width:920px){ .nav{display:none} }
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  height:32px; padding-inline:16px; border-radius:999px; cursor:pointer;
+  font-family:inherit; font-size:13px; font-weight:500; border:0;
+  background:var(--brand); color:var(--foreground);   /* 4.86:1 — verified */
+  transition:background .18s ease, color .18s ease, transform .1s ease;
+}
+.btn:hover{background:var(--brand-deep)}
+.btn:active{transform:scale(.97)}
+.btn-ghost{background:transparent; color:var(--muted-foreground)}
+.btn-ghost:hover{background:var(--muted); color:var(--foreground)}
+.btn-line{background:transparent; color:var(--foreground); border:1px solid var(--border)}
+.btn-line:hover{background:var(--muted)}
+.btn-lg{height:44px; padding-inline:24px; font-size:15px}
+.btn[disabled]{opacity:.5; cursor:not-allowed}
+
+/* language switch */
+.lang{
+  height:32px; padding-inline:12px; border-radius:999px; cursor:pointer;
+  background:transparent; border:1px solid var(--border); color:var(--muted-foreground);
+  font-size:12px; font-weight:500; display:inline-flex; align-items:center; gap:7px;
+  transition:.18s; font-family:var(--mono); letter-spacing:.06em;
+}
+.lang:hover{color:var(--foreground); background:var(--muted)}
+.lang span[lang="ar"]{font-family:"IBM Plex Sans Arabic", sans-serif; letter-spacing:0}
+
+/* ---------- hero (Tailark hero-section-5 layout, hand-built) ----------
+   The React block relied on Tailwind + motion. Same result here in
+   plain CSS so the file stays one drop-in page with no build step.
+   The media panel is `position:relative` on its PARENT — in the
+   original the parent was static and the panel escaped the section. */
+.hero{position:relative; padding-block:150px 60px; overflow:hidden}
+.hero-media{
+  position:absolute; inset:0; border-radius:0; overflow:hidden;
+  background:var(--background);   /* measured from the Webflow build: flat #121423 */
+}
+#stars{position:absolute; inset:0; width:100%; height:100%; display:block; pointer-events:none}
+.hero-media video{width:100%; height:100%; object-fit:cover; opacity:.32; display:block}
+.hero-media::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(to top, var(--background) 4%, rgb(18 20 35 / .72) 46%, transparent 100%);
+}
+.hero-in{position:relative; z-index:2; max-width:var(--maxw); margin-inline:auto; padding-inline:var(--px)}
+.hero .h1{font-size:clamp(36px,6.4vw,68px); font-weight:500; text-wrap:balance; max-width:16ch}
+.hero .lede{margin-block-start:24px; max-width:46ch; font-size:clamp(16px,1.7vw,19px); font-weight:500; color:var(--muted-foreground)}
+.hero .acts{margin-block-start:40px; display:flex; gap:10px; flex-wrap:wrap}
+.btn-pill{height:50px; padding-inline:22px 16px; border-radius:999px; font-size:16px}
+.btn-pill svg{transition:transform .18s ease}
+.btn-pill:hover svg{transform:translateX(-3px)}
+html[dir="ltr"] .btn-pill svg{transform:scaleX(-1)}
+html[dir="ltr"] .btn-pill:hover svg{transform:scaleX(-1) translateX(-3px)}
+@media(max-width:900px){
+  .hero{padding-block:110px 40px}
+  .hero .h1{max-width:100%}
+}
+
+/* ---------- marquee (InfiniteSlider + ProgressiveBlur, in CSS) ---------- */
+.marq-wrap{border-block:1px solid var(--border); padding-block:8px}
+.marq-row{max-width:var(--maxw); margin-inline:auto; padding-inline:var(--px); display:flex; align-items:center; gap:0}
+.marq-label{
+  flex:none; max-width:210px; padding-inline-end:24px;
+  border-inline-end:1px solid var(--border);
+  font-size:13px; color:var(--muted-foreground); text-align:end;
+}
+.marq{position:relative; flex:1; overflow:hidden; padding-block:22px; min-width:0}
+/* The seam used to jump because `gap` sits BETWEEN items: half the
+   track was 7 names + 6.5 gaps, but the loop point needs 7. Each set
+   is now self-contained with its own trailing gap, so translating
+   exactly -50% lands one name on top of its twin. No visible reset.
+   Direction is forced to ltr — the names are Latin, and letting the
+   track flip with the page was a second source of jumping. */
+.marq{direction:ltr}
+.marq-track{display:flex; width:max-content}
+.marq-set{display:flex; gap:96px; padding-inline-end:96px}
+.marq-track span{font-size:18px; font-weight:600; color:rgb(152 155 174 / .62); white-space:nowrap}
+/* progressive blur: stacked layers, each masked further in */
+.fade{position:absolute; top:0; height:100%; width:88px; pointer-events:none; z-index:2}
+.fade.s{inset-inline-start:0}
+.fade.e{inset-inline-end:0}
+.fade i{position:absolute; inset:0; display:block; backdrop-filter:blur(var(--b))}
+.fade.s i:nth-child(1){--b:1px;  mask-image:linear-gradient(to left, transparent 60%, #000 100%)}
+.fade.s i:nth-child(2){--b:3px;  mask-image:linear-gradient(to left, transparent 78%, #000 100%)}
+.fade.s i:nth-child(3){--b:6px;  mask-image:linear-gradient(to left, transparent 90%, #000 100%)}
+.fade.e i:nth-child(1){--b:1px;  mask-image:linear-gradient(to right, transparent 60%, #000 100%)}
+.fade.e i:nth-child(2){--b:3px;  mask-image:linear-gradient(to right, transparent 78%, #000 100%)}
+.fade.e i:nth-child(3){--b:6px;  mask-image:linear-gradient(to right, transparent 90%, #000 100%)}
+.fade::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(to var(--dir,right), var(--background), transparent);
+}
+.fade.s::after{--dir:right}
+.fade.e::after{--dir:left}
+@media(max-width:820px){
+  .marq-row{flex-direction:column; align-items:stretch}
+  .marq-label{max-width:100%; border-inline-end:0; text-align:start; padding-inline-end:0; padding-block-end:12px}
+}
+@media (prefers-reduced-motion: reduce){ .marq-track{animation:none} }
+
+/* header gains its blur only after scroll, like the reference */
+.head{background:transparent; border-block-end-color:transparent; transition:background .3s, border-color .3s}
+.head.stuck{background:rgba(18,20,35,.6); background:color-mix(in srgb,var(--background) 60%,transparent); border-block-end-color:var(--border)}
+
+/* ---------- scroll rows ---------- */
+.rows{display:grid; gap:56px; padding-block:24px 76px}
+.row-head{display:flex; align-items:center; gap:16px; margin-block-end:14px}
+.row-head h4{font-size:15px; font-weight:500; white-space:nowrap}
+.pills{display:flex; gap:8px; overflow-x:auto; padding-block-end:4px; scrollbar-width:none; scroll-snap-type:x proximity}
+.pills::-webkit-scrollbar{display:none}
+.pill{
+  flex:none; scroll-snap-align:start;
+  display:inline-flex; align-items:center; gap:8px;
+  height:32px; padding-inline:14px; border-radius:999px;
+  border:1px solid var(--border); background:var(--surface);
+  font-size:13px; font-weight:500; color:var(--muted-foreground);
+  white-space:nowrap; transition:.18s;
+}
+.pill:hover{color:var(--foreground); border-color:var(--brand-text); background:var(--muted)}
+.pill b{font-family:var(--mono); font-size:11px; font-weight:400; color:rgb(152 155 174 / .5)}
+
+/* ---------- sections ---------- */
+.sec{padding-block:76px}
+.h2{max-width:56ch; font-size:clamp(24px,3.1vw,38px); font-weight:500}
+.vendors{margin-block-start:52px; display:flex; flex-wrap:wrap; gap:20px 28px}
+.vendors span{display:inline-flex; align-items:center; gap:10px; opacity:.55; font-size:17px; font-weight:600; transition:opacity .2s}
+.vendors span:hover{opacity:.9}
+.vendors i{width:6px; height:6px; border-radius:2px; background:var(--muted-foreground); display:block}
+
+/* ---------- process panels ---------- */
+.panels{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-block-start:48px}
+.panel{border:1px solid var(--border); border-radius:12px; background:var(--surface); overflow:hidden; display:flex; flex-direction:column}
+.panel .win{
+  background:#0B0B0E; border-block-end:1px solid var(--border);
+  padding:14px 16px; font-family:var(--mono); font-size:11.5px; line-height:2;
+  color:var(--muted-foreground); min-height:176px; direction:ltr; text-align:left;
+}
+.panel .win .ok{color:var(--ok)}
+.panel .win .k{color:rgb(238 238 238 / .85)}
+.panel .win .c{color:rgb(152 155 174 / .35)}
+.panel .txt{padding:16px}
+.panel h4{font-size:15px; font-weight:500}
+.panel p{margin-block-start:6px; font-size:13.5px; color:var(--muted-foreground)}
+@media(max-width:900px){ .panels{grid-template-columns:1fr} }
+
+/* ---------- before / after ---------- */
+.ba{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-block-start:48px}
+.ba-cell{border:1px solid var(--border); border-radius:12px; padding:22px; background:var(--surface)}
+.ba-cell h4{font-size:15px; font-weight:500; margin-block-end:18px}
+.ba-line{display:grid; grid-template-columns:auto 1fr; gap:8px 14px; align-items:baseline}
+.ba-line .t{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; color:rgb(152 155 174 / .35); white-space:nowrap}
+.ba-line .old{color:rgb(152 155 174 / .5); font-size:14px; text-decoration:line-through; text-decoration-thickness:1px}
+.ba-line .new{color:rgb(238 238 238 / .85); font-size:14px}
+@media(max-width:900px){ .ba{grid-template-columns:1fr} }
+
+/* ---------- paths ---------- */
+.paths{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-block-start:48px}
+.path{border:1px solid var(--border); border-radius:12px; padding:28px; background:var(--surface); display:flex; flex-direction:column}
+.path .tag{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:rgb(152 155 174 / .5)}
+html[lang="ar"] .path .tag{font-family:"IBM Plex Sans Arabic",sans-serif; letter-spacing:.06em}
+.path h3{font-size:22px; font-weight:500; margin-block:14px 6px}
+.path .sub{font-size:14px; color:var(--muted-foreground)}
+.path ul{list-style:none; margin:24px 0 0; padding:0; display:grid; gap:12px}
+.path li{display:grid; grid-template-columns:auto 1fr; gap:12px; font-size:14px; color:var(--muted-foreground); align-items:baseline}
+.path li i{width:12px; height:1px; background:rgb(152 155 174 / .4); display:block; transform:translateY(-5px)}
+.path .end{margin-block-start:auto; padding-block-start:28px}
+.path .price{font-size:20px; font-weight:500}
+.path .price small{font-size:13px; color:rgb(152 155 174 / .5); font-weight:400; margin-inline-start:8px}
+@media(max-width:900px){ .paths{grid-template-columns:1fr} }
+
+/* ---------- compliance ---------- */
+.comply{display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; margin-block-start:44px}
+.ck{list-style:none; margin:0; padding:0; display:grid; gap:16px}
+.ck li{display:grid; grid-template-columns:auto 1fr; gap:12px; font-size:14.5px; align-items:baseline; color:rgb(238 238 238 / .85)}
+.ck svg{color:var(--ok); transform:translateY(3px)}
+@media(max-width:900px){ .comply{grid-template-columns:1fr; gap:28px} }
+
+/* ---------- contact ---------- */
+.contact{display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; margin-block-start:44px}
+.field{display:grid; gap:6px; margin-block-end:16px}
+.field label{font-size:13px; color:var(--muted-foreground)}
+.field input,.field select,.field textarea{
+  font-family:inherit; font-size:15px; color:var(--foreground);
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--r);
+  padding:11px 14px; min-height:44px; width:100%;
+}
+.field textarea{min-height:96px; resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:rgb(152 155 174 / .35)}
+.field.bad input,.field.bad select{border-color:#B4533F}
+.emsg{font-size:12.5px; color:#E09781; display:none}
+.field.bad .emsg{display:block}
+.hint{font-size:12.5px; color:rgb(152 155 174 / .5)}
+.two{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.state{display:none; gap:10px; align-items:flex-start; margin-block-start:14px; padding:13px; border:1px solid var(--border); border-radius:var(--r); background:var(--surface); font-size:14px}
+.state.on{display:flex}
+.state.ok{border-color:var(--ok)}
+.state.err{border-color:#B4533F}
+.spin{width:14px;height:14px;border:1.5px solid var(--muted-foreground);border-block-start-color:transparent;border-radius:50%;animation:spin .8s linear infinite;flex:none;margin-block-start:4px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.reach{display:flex; flex-wrap:wrap; gap:10px; margin-block-start:22px}
+.live{display:flex; align-items:center; gap:9px; margin-block-start:22px; font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--muted-foreground)}
+html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.path .tag{color:var(--brand-text)}
+.row-head h4 span:first-child{color:var(--brand-text)}
+@media(max-width:900px){ .contact{grid-template-columns:1fr; gap:28px} .two{grid-template-columns:1fr; gap:0} }
+
+/* ---------- footer ---------- */
+.foot{border-block-start:1px solid var(--border); padding-block:22px; margin-block-start:40px}
+.foot-links{display:flex; flex-wrap:wrap; gap:18px; align-items:center}
+.foot-links a{color:var(--muted-foreground); text-decoration:none; transition:color .18s}
+.foot-links a:hover{color:var(--foreground)}
+.foot-in{max-width:var(--maxw); margin-inline:auto; padding-inline:var(--px); display:flex; flex-wrap:wrap; gap:18px 14px; align-items:center; justify-content:space-between; font-size:12.5px; color:rgb(152 155 174 / .5)}
+.skip{position:absolute; inset-inline-start:-9999px}
+.skip:focus{position:static; display:inline-block; padding:10px 16px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" data-t="skip">Skip to content</a>
+<div class="strands" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+<header class="head">
+  <div class="head-in">
+    <a class="brand" href="#" aria-label="RQN — home"><svg class="mark" xmlns="http://www.w3.org/2000/svg" viewBox="264.3 137.9 243.8 165.3" fill="currentColor" role="img" aria-label="RQN"><path fill="currentColor" d="M 293.339844 293.90625 L 286.964844 284.945312 C 286.246094 285.019531 285.503906 285.0625 284.734375 285.0625 L 277.242188 285.0625 L 277.242188 293.90625 L 274.292969 293.90625 L 274.292969 266.015625 L 284.734375 266.015625 C 288.292969 266.015625 291.082031 266.863281 293.101562 268.5625 C 295.125 270.265625 296.128906 272.605469 296.128906 275.578125 C 296.128906 277.757812 295.578125 279.59375 294.476562 281.097656 C 293.375 282.597656 291.800781 283.683594 289.753906 284.34375 L 296.566406 293.90625 Z M 290.988281 280.714844 C 292.449219 279.496094 293.179688 277.78125 293.179688 275.574219 C 293.179688 273.363281 292.449219 271.578125 290.988281 270.371094 C 289.527344 269.164062 287.414062 268.558594 284.652344 268.558594 L 277.242188 268.558594 L 277.242188 282.546875 L 284.652344 282.546875 C 287.414062 282.546875 289.527344 281.933594 290.988281 280.714844 Z M 290.988281 280.714844 " fill-rule="nonzero"/><path fill="currentColor" d="M 332.203125 286.851562 C 331.074219 288.925781 329.507812 290.589844 327.503906 291.851562 C 325.496094 293.113281 323.234375 293.847656 320.707031 294.058594 L 320.707031 299.277344 L 317.796875 299.277344 L 317.796875 294.058594 C 315.273438 293.847656 313.011719 293.105469 311 291.828125 C 308.992188 290.550781 307.425781 288.882812 306.300781 286.828125 C 305.171875 284.773438 304.605469 282.480469 304.605469 279.953125 C 304.605469 277.273438 305.234375 274.855469 306.496094 272.703125 C 307.757812 270.554688 309.511719 268.859375 311.753906 267.621094 C 314 266.386719 316.503906 265.765625 319.265625 265.765625 C 322.027344 265.765625 324.519531 266.378906 326.734375 267.597656 C 328.953125 268.824219 330.695312 270.515625 331.972656 272.675781 C 333.253906 274.84375 333.890625 277.261719 333.890625 279.949219 C 333.890625 282.476562 333.324219 284.773438 332.191406 286.839844 Z M 325.96875 289.585938 C 327.535156 288.535156 328.757812 287.175781 329.628906 285.503906 C 330.507812 283.832031 330.945312 281.980469 330.945312 279.964844 C 330.945312 277.789062 330.4375 275.820312 329.429688 274.070312 C 328.421875 272.316406 327.027344 270.9375 325.25 269.925781 C 323.46875 268.910156 321.480469 268.410156 319.269531 268.410156 C 317.0625 268.410156 315.066406 268.917969 313.273438 269.925781 C 311.484375 270.933594 310.070312 272.316406 309.050781 274.070312 C 308.027344 275.828125 307.519531 277.792969 307.519531 279.964844 C 307.519531 281.988281 307.960938 283.832031 308.859375 285.503906 C 309.746094 287.175781 310.976562 288.53125 312.542969 289.566406 C 314.113281 290.601562 315.890625 291.226562 317.886719 291.441406 L 317.886719 284.546875 L 320.636719 284.546875 L 320.636719 291.441406 C 322.628906 291.25 324.40625 290.640625 325.980469 289.585938 Z M 325.96875 289.585938 " fill-rule="nonzero"/><path fill="currentColor" d="M 364.636719 268.765625 C 366.535156 270.753906 367.488281 273.601562 367.488281 277.292969 L 367.488281 293.90625 L 364.539062 293.90625 L 364.539062 277.371094 C 364.539062 274.417969 363.808594 272.191406 362.347656 270.671875 C 360.886719 269.152344 358.84375 268.398438 356.210938 268.398438 C 353.449219 268.398438 351.296875 269.207031 349.753906 270.808594 C 348.210938 272.417969 347.445312 274.824219 347.445312 278.039062 L 347.445312 293.902344 L 344.496094 293.902344 L 344.496094 266.007812 L 347.324219 266.007812 L 347.324219 270.707031 C 349.101562 267.414062 352.253906 265.765625 356.765625 265.765625 C 360.109375 265.765625 362.734375 266.761719 364.632812 268.753906 Z M 364.636719 268.765625 " fill-rule="nonzero"/><path fill="currentColor" d="M 356.863281 251.625 L 274.605469 251.625 C 271.136719 251.625 268.324219 249.746094 268.324219 247.425781 C 268.324219 239.78125 277.597656 233.585938 289.027344 233.585938 L 356.859375 233.585938 C 357.734375 233.585938 358.449219 234.0625 358.449219 234.652344 L 358.449219 250.558594 C 358.449219 251.148438 357.734375 251.625 356.859375 251.625 Z M 356.863281 251.625 " fill-rule="nonzero"/><path fill="currentColor" d="M 355.769531 233.472656 L 375.847656 233.472656 L 375.847656 215.558594 C 375.921875 212.40625 378.515625 208.300781 383.609375 203.242188 C 384.738281 202.152344 386.175781 201.023438 387.925781 199.855469 C 391.347656 198.105469 393.0625 198.023438 393.0625 199.621094 L 393.0625 224.425781 C 393.257812 230.027344 398.644531 233.066406 409.230469 233.53125 L 409.230469 251.683594 L 401.289062 251.683594 C 388.992188 251.726562 381.324219 248.726562 378.289062 242.699219 C 374.675781 246.394531 371.289062 248.789062 368.136719 249.875 C 365.257812 250.847656 361.132812 251.429688 355.761719 251.625 L 355.761719 233.472656 Z M 312.640625 203.425781 C 311.625 202.917969 312.054688 201.1875 313.921875 198.230469 C 315.054688 196.480469 316.238281 194.886719 317.484375 193.441406 C 319.429688 191.1875 321.320312 189.457031 323.144531 188.246094 C 324.742188 187.199219 325.925781 186.863281 326.710938 187.257812 C 330.914062 189.242188 334.648438 192.125 337.917969 195.898438 C 338.460938 196.523438 338.289062 197.746094 337.394531 199.574219 C 336.457031 201.558594 335.019531 203.660156 333.074219 205.875 C 331.132812 208.089844 329.242188 209.804688 327.417969 211.011719 C 325.550781 212.296875 324.359375 212.644531 323.851562 212.058594 C 320.585938 208.324219 316.851562 205.445312 312.644531 203.417969 Z M 312.640625 203.425781 " fill-rule="nonzero"/><path fill="currentColor" d="M 408.246094 233.472656 L 452.371094 233.472656 C 452.097656 231.296875 451.785156 229.582031 451.433594 228.339844 C 438.628906 228.804688 431.492188 228.996094 430.011719 228.921875 C 422.738281 228.726562 417.699219 227.5625 414.894531 225.417969 C 411 222.382812 410.265625 217.554688 412.675781 210.941406 C 414.542969 205.921875 417.421875 200.59375 421.3125 194.949219 C 426.566406 187.363281 432.09375 182.128906 437.886719 179.25 C 442.363281 177.027344 446.757812 177.363281 451.082031 180.238281 C 454.542969 182.492188 457.601562 186.035156 460.246094 190.863281 C 462.5 194.984375 464.410156 199.890625 465.964844 205.570312 C 467.792969 212.34375 468.765625 217.75 468.882812 221.796875 C 467.988281 236.8125 461.941406 246.25 450.734375 250.101562 C 448.984375 251.34375 434.820312 251.851562 408.238281 251.621094 L 408.238281 233.46875 Z M 413.261719 160.046875 C 412.132812 159.507812 412.601562 157.617188 414.664062 154.386719 C 415.90625 152.445312 417.214844 150.691406 418.574219 149.136719 C 420.679688 146.683594 422.722656 144.792969 424.707031 143.476562 C 426.457031 142.308594 427.761719 141.9375 428.617188 142.367188 C 433.210938 144.589844 437.273438 147.738281 440.816406 151.820312 C 441.4375 152.519531 441.261719 153.863281 440.289062 155.847656 C 439.242188 157.988281 437.664062 160.285156 435.5625 162.734375 C 433.421875 165.183594 431.355469 167.074219 429.378906 168.394531 C 427.316406 169.753906 426.015625 170.125 425.464844 169.5 C 421.925781 165.414062 417.855469 162.261719 413.269531 160.046875 Z M 443.554688 205.28125 C 439.972656 200.339844 436.6875 197.558594 433.6875 196.933594 C 432.480469 196.699219 431.449219 196.664062 430.597656 196.816406 C 427.132812 198.84375 426.863281 202.128906 429.777344 206.683594 C 430.476562 207.695312 431.355469 208.492188 432.402344 209.074219 C 434.429688 210.28125 437.152344 211.058594 440.574219 211.40625 C 441.898438 211.523438 444.152344 211.558594 447.347656 211.523438 C 446.257812 209.304688 444.992188 207.222656 443.554688 205.28125 Z M 441.101562 160.453125 C 439.972656 159.914062 440.445312 158.023438 442.503906 154.792969 C 443.746094 152.851562 445.054688 151.097656 446.414062 149.542969 C 448.519531 147.089844 450.5625 145.199219 452.546875 143.882812 C 454.296875 142.714844 455.601562 142.34375 456.457031 142.773438 C 461.050781 144.996094 465.113281 148.144531 468.65625 152.226562 C 469.277344 152.929688 469.101562 154.269531 468.128906 156.253906 C 467.082031 158.394531 465.503906 160.691406 463.402344 163.140625 C 461.261719 165.589844 459.195312 167.480469 457.21875 168.800781 C 455.15625 170.160156 453.855469 170.53125 453.304688 169.90625 C 449.765625 165.820312 445.695312 162.667969 441.109375 160.453125 Z M 441.101562 160.453125 " fill-rule="nonzero"/><path fill="currentColor" d="M 504.144531 178.460938 L 480.742188 190.132812 L 480.742188 183.710938 L 504.144531 171.980469 Z M 504.144531 178.460938 " fill-rule="nonzero"/><path fill="currentColor" d="M 486.535156 225.070312 C 485.875 224.097656 485.597656 222.207031 485.71875 219.410156 C 485.792969 216.53125 486.257812 213.554688 487.117188 210.480469 C 487.582031 208.808594 488.226562 207.117188 489.042969 205.402344 C 490.445312 202.640625 491.59375 201.898438 492.488281 203.183594 C 499.6875 213.691406 503.054688 224.308594 502.585938 235.050781 C 501.960938 249.058594 498.148438 260.402344 491.148438 269.082031 C 484.144531 277.679688 471.441406 286.203125 453.035156 294.648438 C 450.703125 295.699219 449.945312 292.765625 450.761719 285.839844 C 451.152344 282.6875 451.835938 279.75 452.804688 277.027344 C 453.855469 274.148438 454.832031 272.515625 455.726562 272.128906 C 463.234375 268.664062 469.074219 265.75 473.238281 263.371094 C 476.742188 261.34375 479.757812 259.382812 482.285156 257.472656 C 483.914062 256.265625 485.316406 255.140625 486.488281 254.085938 C 487.34375 253.34375 488.066406 252.703125 488.648438 252.160156 L 489.699219 251.113281 C 491.023438 249.675781 492.128906 248.332031 493.027344 247.085938 C 493.648438 246.191406 494.082031 245.53125 494.332031 245.101562 C 494.585938 244.671875 494.792969 244.324219 494.953125 244.050781 C 494.445312 241.367188 493.84375 239.09375 493.144531 237.226562 C 491.859375 233.644531 489.664062 229.597656 486.546875 225.085938 Z M 486.535156 225.070312 " fill-rule="nonzero"/></svg></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#how" data-t="nav1">How we work</a>
+      <a href="#paths" data-t="nav2">Packages</a>
+      <a href="#compliance" data-t="nav3">Compliance</a>
+      <a href="#contact" data-t="nav4">Contact</a>
+    </nav>
+    <div class="head-act">
+      <button class="lang" id="lang" type="button" aria-label="Switch language">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18"/></svg>
+        <span id="lang-label" lang="ar">عربي</span>
+      </button>
+      <a class="btn" href="#contact" data-t="cta">Book a site visit</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-media" aria-hidden="true">
+    <!-- drop your own clip at media/site-loop.mp4 — until then the panel
+         renders as a lit technical grid, so it never looks broken -->
+    <canvas id="stars"></canvas>
+  </div>
+
+  <div class="hero-in">
+    <h1 class="h1 in" style="animation-delay:.05s" data-t="heroH">Infrastructure you never think about.</h1>
+    <p class="lede in" style="animation-delay:.3s" data-t="heroP">Structured cabling, networks, and surveillance across Riyadh — planned on a drawing, delivered with test reports, and covered by a support contract.</p>
+    <div class="acts in" style="animation-delay:.5s">
+      <a class="btn btn-pill" href="#contact">
+        <span data-t="cta">Book a site visit</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      </a>
+      <a class="btn btn-line btn-pill" href="#paths" data-t="cta2">See packages</a>
+    </div>
+  </div>
+</section>
+
+<!-- VENDOR MARQUEE -->
+<div class="marq-wrap up" style="animation-delay:.6s">
+  <div class="marq-row">
+    <p class="marq-label" data-t="vendorsLabel">Built on hardware you can service</p>
+    <div class="marq">
+      <div class="marq-track"><div class="marq-set"><span>Hikvision</span><span>Ubiquiti</span><span>Cisco</span><span>Aruba</span><span>Dahua</span><span>Synology</span><span>Fortinet</span></div><div class="marq-set"><span>Hikvision</span><span>Ubiquiti</span><span>Cisco</span><span>Aruba</span><span>Dahua</span><span>Synology</span><span>Fortinet</span></div></div>
+      <div class="fade s"><i></i><i></i><i></i></div>
+      <div class="fade e"><i></i><i></i><i></i></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROWS -->
+<section class="wrap">
+  <div class="rows">
+    <div class="up" style="animation-delay:.62s">
+      <div class="row-head"><h4><span data-t="r1a">6 disciplines</span> <span class="mf" data-t="r1b">we deliver:</span></h4></div>
+      <div class="pills">
+        <a class="pill" href="#how"><span data-t="s1">Structured cabling</span> <b>Cat6A</b></a>
+        <a class="pill" href="#how"><span data-t="s2">Surveillance</span> <b>4K</b></a>
+        <a class="pill" href="#how"><span data-t="s3">Wireless</span> <b>Wi-Fi 6</b></a>
+        <a class="pill" href="#how"><span data-t="s4">Access control</span> <b>Access</b></a>
+        <a class="pill" href="#how"><span data-t="s5">Servers & storage</span> <b>NAS</b></a>
+        <a class="pill" href="#how"><span data-t="s6">IT support</span> <b>SLA</b></a>
+      </div>
+    </div>
+
+    <div class="up" style="animation-delay:.74s">
+      <div class="row-head"><h4><span data-t="r2a">420+</span> <span class="mf" data-t="r2b">sites delivered:</span></h4></div>
+      <div class="pills">
+        <a class="pill" href="#paths"><span data-t="c1">Warehouses</span> <b data-t="n1">140</b></a>
+        <a class="pill" href="#paths"><span data-t="c2">Retail branches</span> <b data-t="n2">96</b></a>
+        <a class="pill" href="#paths"><span data-t="c3">Factories</span> <b data-t="n3">58</b></a>
+        <a class="pill" href="#paths"><span data-t="c4">Clinics</span> <b data-t="n4">47</b></a>
+        <a class="pill" href="#paths"><span data-t="c5">Schools</span> <b data-t="n5">33</b></a>
+        <a class="pill" href="#paths"><span data-t="c6">Offices & cafés</span> <b data-t="n6">46</b></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="wrap sec" style="padding-block-start:0">
+  <h2 class="h2"><span data-t="trustA">Trusted on 420+ sites across the Kingdom.</span> <span class="mf" data-t="trustB">From a four-camera shop to a warehouse running three network layers.</span></h2>
+</section>
+
+<!-- PROCESS -->
+<section class="wrap sec" id="how" style="padding-block-start:0">
+  <h2 class="h2"><span data-t="procA">Three stages. Each one ends with a document.</span> <span class="mf" data-t="procB">Not a verbal promise.</span></h2>
+  <div class="panels">
+    <div class="panel">
+      <div class="win">
+        <div class="c" data-t="w1t"># site survey — 800m² warehouse</div>
+        <div><span class="k" data-t="w1a">Area</span> ......... 812 m²</div>
+        <div><span class="k" data-t="w1b">Points</span> ....... 46</div>
+        <div><span class="k" data-t="w1c">Cameras</span> ...... 18</div>
+        <div><span class="k" data-t="w1d">Cable run</span> .... 610 m</div>
+        <div><span class="k" data-t="w1e">Server room</span> .. admin office</div>
+        <div class="c" data-t="w1f">— draft drawing ready for sign-off</div>
+      </div>
+      <div class="txt">
+        <h4 data-t="p1h">1. Site survey</h4>
+        <p class="prose" data-t="p1p">Our engineer measures the site, maps the cable routes, and hands you a drawing before a single device is purchased.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="win">
+        <div class="c" data-t="w2t"># cable certification — Fluke</div>
+        <div><span class="ok">✓ PASS</span> A-01 .. 38.2 m · Cat6A</div>
+        <div><span class="ok">✓ PASS</span> A-02 .. 41.7 m · Cat6A</div>
+        <div><span class="ok">✓ PASS</span> A-03 .. 29.4 m · Cat6A</div>
+        <div><span class="ok">✓ PASS</span> B-01 .. 52.9 m · Cat6A</div>
+        <div class="c" data-t="w2f">46/46 points passed</div>
+      </div>
+      <div class="txt">
+        <h4 data-t="p2h">2. Install & certify</h4>
+        <p class="prose" data-t="p2p">Every point is labelled and certified with a cable tester. Results are stored against the point ID — so any technician after us knows exactly what you have.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="win">
+        <div class="c" data-t="w3t"># handover file</div>
+        <div><span class="ok">✓</span> <span data-t="w3a">Final network drawing</span></div>
+        <div><span class="ok">✓</span> <span data-t="w3b">Test reports — 46 points</span></div>
+        <div><span class="ok">✓</span> <span data-t="w3c">Camera position schedule</span></div>
+        <div><span class="ok">✓</span> <span data-t="w3d">Retention settings</span></div>
+        <div><span class="ok">✓</span> <span data-t="w3e">Credentials & warranty</span></div>
+        <div class="c" data-t="w3f">— ready for inspection</div>
+      </div>
+      <div class="txt">
+        <h4 data-t="p3h">3. Handover & contract</h4>
+        <p class="prose" data-t="p3p">You receive a complete file and move onto a support contract with a binding response time. We don't install and disappear.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section class="wrap sec" style="padding-block-start:0">
+  <h2 class="h2"><span data-t="baA">What actually changes.</span> <span class="mf" data-t="baB">Three moments where you find out how good your contractor was.</span></h2>
+  <div class="ba">
+    <div class="ba-cell">
+      <h4 data-t="ba1h">When something fails</h4>
+      <div class="ba-line">
+        <span class="t" data-t="before">Before</span><span class="old" data-t="ba1o">Hunting for an available technician</span>
+        <span class="t" data-t="with">With RQN</span><span class="new" data-t="ba1n">One ticket — on site within 4 hours</span>
+      </div>
+    </div>
+    <div class="ba-cell">
+      <h4 data-t="ba2h">When you expand</h4>
+      <div class="ba-line">
+        <span class="t" data-t="before">Before</span><span class="old" data-t="ba2o">Unlabelled cable, no drawing</span>
+        <span class="t" data-t="with">With RQN</span><span class="new" data-t="ba2n">Updated drawing, a report per point</span>
+      </div>
+    </div>
+    <div class="ba-cell">
+      <h4 data-t="ba3h">When inspectors arrive</h4>
+      <div class="ba-line">
+        <span class="t" data-t="before">Before</span><span class="old" data-t="ba3o">A violation you didn't see coming</span>
+        <span class="t" data-t="with">With RQN</span><span class="new" data-t="ba3n">Compliance file ready to present</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PATHS -->
+<section class="wrap sec" id="paths" style="padding-block-start:0">
+  <h2 class="h2"><span data-t="pathA">The size of your project decides how we work.</span> <span class="mf" data-t="pathB">We don't sell the warehouse and the corner shop the same thing.</span></h2>
+  <div class="paths">
+    <article class="path">
+      <span class="tag" data-t="t1">For facilities & projects</span>
+      <h3 data-t="pa1h">Delivered under contract and SLA</h3>
+      <p class="sub" data-t="pa1s">Warehouses, factories, hospitals, and multi-branch operations.</p>
+      <ul>
+        <li><i></i><span data-t="pa1a">Site survey and cabling drawing before any hardware is bought</span></li>
+        <li><i></i><span data-t="pa1b">Service level agreement with a binding response time</span></li>
+        <li><i></i><span data-t="pa1c">Scheduled maintenance reports and asset inventory</span></li>
+        <li><i></i><span data-t="pa1d">Phased rollout without stopping operations</span></li>
+      </ul>
+      <div class="end">
+        <div class="price" data-t="pa1p">Priced per project</div>
+        <a class="btn btn-lg" href="#contact" style="margin-block-start:16px" data-t="pa1c2">Request a technical proposal</a>
+      </div>
+    </article>
+
+    <article class="path">
+      <span class="tag" data-t="t2">For shops & offices</span>
+      <h3 data-t="pa2h">Fixed packages, clear pricing</h3>
+      <p class="sub" data-t="pa2s">Shops, cafés, clinics, and small offices.</p>
+      <ul>
+        <li><i></i><span data-t="pa2a">Installation included in the price — no surprise costs</span></li>
+        <li><i></i><span data-t="pa2b">Installed within 48 hours of approval</span></li>
+        <li><i></i><span data-t="pa2c">One year warranty on hardware and labour</span></li>
+        <li><i></i><span data-t="pa2d">Quick handover on viewing from your phone</span></li>
+      </ul>
+      <div class="end">
+        <div class="price"><span data-t="pa2p">From SAR 2,400</span> <small data-t="pa2p2">4 cameras, installed</small></div>
+        <a class="btn btn-line btn-lg" href="#contact" style="margin-block-start:16px" data-t="cta2">See packages</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- COMPLIANCE -->
+<section class="wrap sec" id="compliance" style="padding-block-start:0">
+  <div class="comply">
+    <div>
+      <h2 class="h2"><span data-t="cmpA">Your system arrives compliant with Saudi security camera regulations.</span> <span class="mf" data-t="cmpB">Checked before installation, not after.</span></h2>
+      <p class="mf prose" style="margin-block-start:18px; max-width:44ch; font-size:14.5px" data-t="cmpP">Plenty of facilities discover the violation after they've already paid — then pay again. We check what your activity requires from the start.</p>
+    </div>
+    <ul class="ck">
+      <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg><span data-t="ck1">Approved camera positions for your activity type</span></li>
+      <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg><span data-t="ck2">Storage sized for the required retention period</span></li>
+      <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg><span data-t="ck3">Recording quality set for faces and plates</span></li>
+      <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg><span data-t="ck4">A handover file ready to present at inspection</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="wrap sec" id="contact" style="padding-block-start:0">
+  <div class="contact">
+    <div>
+      <h2 class="h2"><span data-t="conA">Book a site visit.</span> <span class="mf" data-t="conB">Free anywhere in Riyadh.</span></h2>
+      <p class="mf prose" style="margin-block-start:18px; max-width:40ch; font-size:14.5px" data-t="conP">Our engineer comes out, measures, and sends a written proposal within two working days.</p>
+      <div class="live"><span class="dot"></span> <span data-t="live">We reply within an hour during business hours</span></div>
+      <div class="reach">
+        <a class="btn btn-line btn-lg" id="wa" href="https://wa.me/966570001217?text=Hi%20RQN%2C%20I%27d%20like%20to%20request%20a%20site%20visit." target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20.5 3.5A11 11 0 0 0 4.9 18.2L3.5 20.5l2.3-1.4A11 11 0 1 0 20.5 3.5Z"/></svg>
+          <span data-t="wa">WhatsApp us</span>
+        </a>
+        <a class="btn btn-line btn-lg" href="tel:+966570001217">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg>
+          <span dir="ltr" class="mono">+966 57 000 1217</span>
+        </a>
+      </div>
+    </div>
+
+    <form id="lead" novalidate>
+      <div class="two">
+        <div class="field" id="f-name">
+          <label for="name" data-t="lName">Name</label>
+          <input id="name" type="text" autocomplete="name" data-ph="phName" placeholder="Full name">
+          <span class="emsg" data-t="eName">Enter your name so we know who we're talking to.</span>
+        </div>
+        <div class="field" id="f-phone">
+          <label for="phone" data-t="lPhone">Mobile number</label>
+          <input id="phone" type="tel" inputmode="numeric" dir="ltr" placeholder="05XXXXXXXX" autocomplete="tel">
+          <span class="emsg" data-t="ePhone">Enter a mobile number starting with 05.</span>
+        </div>
+      </div>
+      <div class="two">
+        <div class="field" id="f-type">
+          <label for="type" data-t="lType">Facility type</label>
+          <select id="type">
+            <option value="" data-t="o0">Choose...</option>
+            <option data-t="o1">Warehouse or factory</option>
+            <option data-t="o2">Shop or retail branch</option>
+            <option data-t="o3">Office</option>
+            <option data-t="o4">Clinic or hospital</option>
+            <option data-t="o5">School or institute</option>
+            <option data-t="o6">Other</option>
+          </select>
+          <span class="emsg" data-t="eType">Choose a facility type.</span>
+        </div>
+        <div class="field">
+          <label for="city" data-t="lCity">City</label>
+          <input id="city" type="text" value="Riyadh">
+          <span class="hint" data-t="hCity">We work outside Riyadh depending on project size.</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="msg" data-t="lMsg">What do you need?</label>
+        <textarea id="msg" class="prose" data-ph="phMsg" placeholder="e.g. 800m² warehouse — 12 cameras plus an office network."></textarea>
+        <span class="hint" data-t="hMsg">Optional — but it saves us both time.</span>
+      </div>
+      <button class="btn btn-lg" type="submit" id="go" style="width:100%" data-t="send">Send request</button>
+      <div class="state" id="state" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <span class="foot-logo"><svg class="lockup" xmlns="http://www.w3.org/2000/svg" viewBox="264.3 137.9 243.8 165.3" fill="currentColor" role="img" aria-label="RQN"><path fill="currentColor" d="M 293.339844 293.90625 L 286.964844 284.945312 C 286.246094 285.019531 285.503906 285.0625 284.734375 285.0625 L 277.242188 285.0625 L 277.242188 293.90625 L 274.292969 293.90625 L 274.292969 266.015625 L 284.734375 266.015625 C 288.292969 266.015625 291.082031 266.863281 293.101562 268.5625 C 295.125 270.265625 296.128906 272.605469 296.128906 275.578125 C 296.128906 277.757812 295.578125 279.59375 294.476562 281.097656 C 293.375 282.597656 291.800781 283.683594 289.753906 284.34375 L 296.566406 293.90625 Z M 290.988281 280.714844 C 292.449219 279.496094 293.179688 277.78125 293.179688 275.574219 C 293.179688 273.363281 292.449219 271.578125 290.988281 270.371094 C 289.527344 269.164062 287.414062 268.558594 284.652344 268.558594 L 277.242188 268.558594 L 277.242188 282.546875 L 284.652344 282.546875 C 287.414062 282.546875 289.527344 281.933594 290.988281 280.714844 Z M 290.988281 280.714844 " fill-rule="nonzero"/><path fill="currentColor" d="M 332.203125 286.851562 C 331.074219 288.925781 329.507812 290.589844 327.503906 291.851562 C 325.496094 293.113281 323.234375 293.847656 320.707031 294.058594 L 320.707031 299.277344 L 317.796875 299.277344 L 317.796875 294.058594 C 315.273438 293.847656 313.011719 293.105469 311 291.828125 C 308.992188 290.550781 307.425781 288.882812 306.300781 286.828125 C 305.171875 284.773438 304.605469 282.480469 304.605469 279.953125 C 304.605469 277.273438 305.234375 274.855469 306.496094 272.703125 C 307.757812 270.554688 309.511719 268.859375 311.753906 267.621094 C 314 266.386719 316.503906 265.765625 319.265625 265.765625 C 322.027344 265.765625 324.519531 266.378906 326.734375 267.597656 C 328.953125 268.824219 330.695312 270.515625 331.972656 272.675781 C 333.253906 274.84375 333.890625 277.261719 333.890625 279.949219 C 333.890625 282.476562 333.324219 284.773438 332.191406 286.839844 Z M 325.96875 289.585938 C 327.535156 288.535156 328.757812 287.175781 329.628906 285.503906 C 330.507812 283.832031 330.945312 281.980469 330.945312 279.964844 C 330.945312 277.789062 330.4375 275.820312 329.429688 274.070312 C 328.421875 272.316406 327.027344 270.9375 325.25 269.925781 C 323.46875 268.910156 321.480469 268.410156 319.269531 268.410156 C 317.0625 268.410156 315.066406 268.917969 313.273438 269.925781 C 311.484375 270.933594 310.070312 272.316406 309.050781 274.070312 C 308.027344 275.828125 307.519531 277.792969 307.519531 279.964844 C 307.519531 281.988281 307.960938 283.832031 308.859375 285.503906 C 309.746094 287.175781 310.976562 288.53125 312.542969 289.566406 C 314.113281 290.601562 315.890625 291.226562 317.886719 291.441406 L 317.886719 284.546875 L 320.636719 284.546875 L 320.636719 291.441406 C 322.628906 291.25 324.40625 290.640625 325.980469 289.585938 Z M 325.96875 289.585938 " fill-rule="nonzero"/><path fill="currentColor" d="M 364.636719 268.765625 C 366.535156 270.753906 367.488281 273.601562 367.488281 277.292969 L 367.488281 293.90625 L 364.539062 293.90625 L 364.539062 277.371094 C 364.539062 274.417969 363.808594 272.191406 362.347656 270.671875 C 360.886719 269.152344 358.84375 268.398438 356.210938 268.398438 C 353.449219 268.398438 351.296875 269.207031 349.753906 270.808594 C 348.210938 272.417969 347.445312 274.824219 347.445312 278.039062 L 347.445312 293.902344 L 344.496094 293.902344 L 344.496094 266.007812 L 347.324219 266.007812 L 347.324219 270.707031 C 349.101562 267.414062 352.253906 265.765625 356.765625 265.765625 C 360.109375 265.765625 362.734375 266.761719 364.632812 268.753906 Z M 364.636719 268.765625 " fill-rule="nonzero"/><path fill="currentColor" d="M 356.863281 251.625 L 274.605469 251.625 C 271.136719 251.625 268.324219 249.746094 268.324219 247.425781 C 268.324219 239.78125 277.597656 233.585938 289.027344 233.585938 L 356.859375 233.585938 C 357.734375 233.585938 358.449219 234.0625 358.449219 234.652344 L 358.449219 250.558594 C 358.449219 251.148438 357.734375 251.625 356.859375 251.625 Z M 356.863281 251.625 " fill-rule="nonzero"/><path fill="currentColor" d="M 355.769531 233.472656 L 375.847656 233.472656 L 375.847656 215.558594 C 375.921875 212.40625 378.515625 208.300781 383.609375 203.242188 C 384.738281 202.152344 386.175781 201.023438 387.925781 199.855469 C 391.347656 198.105469 393.0625 198.023438 393.0625 199.621094 L 393.0625 224.425781 C 393.257812 230.027344 398.644531 233.066406 409.230469 233.53125 L 409.230469 251.683594 L 401.289062 251.683594 C 388.992188 251.726562 381.324219 248.726562 378.289062 242.699219 C 374.675781 246.394531 371.289062 248.789062 368.136719 249.875 C 365.257812 250.847656 361.132812 251.429688 355.761719 251.625 L 355.761719 233.472656 Z M 312.640625 203.425781 C 311.625 202.917969 312.054688 201.1875 313.921875 198.230469 C 315.054688 196.480469 316.238281 194.886719 317.484375 193.441406 C 319.429688 191.1875 321.320312 189.457031 323.144531 188.246094 C 324.742188 187.199219 325.925781 186.863281 326.710938 187.257812 C 330.914062 189.242188 334.648438 192.125 337.917969 195.898438 C 338.460938 196.523438 338.289062 197.746094 337.394531 199.574219 C 336.457031 201.558594 335.019531 203.660156 333.074219 205.875 C 331.132812 208.089844 329.242188 209.804688 327.417969 211.011719 C 325.550781 212.296875 324.359375 212.644531 323.851562 212.058594 C 320.585938 208.324219 316.851562 205.445312 312.644531 203.417969 Z M 312.640625 203.425781 " fill-rule="nonzero"/><path fill="currentColor" d="M 408.246094 233.472656 L 452.371094 233.472656 C 452.097656 231.296875 451.785156 229.582031 451.433594 228.339844 C 438.628906 228.804688 431.492188 228.996094 430.011719 228.921875 C 422.738281 228.726562 417.699219 227.5625 414.894531 225.417969 C 411 222.382812 410.265625 217.554688 412.675781 210.941406 C 414.542969 205.921875 417.421875 200.59375 421.3125 194.949219 C 426.566406 187.363281 432.09375 182.128906 437.886719 179.25 C 442.363281 177.027344 446.757812 177.363281 451.082031 180.238281 C 454.542969 182.492188 457.601562 186.035156 460.246094 190.863281 C 462.5 194.984375 464.410156 199.890625 465.964844 205.570312 C 467.792969 212.34375 468.765625 217.75 468.882812 221.796875 C 467.988281 236.8125 461.941406 246.25 450.734375 250.101562 C 448.984375 251.34375 434.820312 251.851562 408.238281 251.621094 L 408.238281 233.46875 Z M 413.261719 160.046875 C 412.132812 159.507812 412.601562 157.617188 414.664062 154.386719 C 415.90625 152.445312 417.214844 150.691406 418.574219 149.136719 C 420.679688 146.683594 422.722656 144.792969 424.707031 143.476562 C 426.457031 142.308594 427.761719 141.9375 428.617188 142.367188 C 433.210938 144.589844 437.273438 147.738281 440.816406 151.820312 C 441.4375 152.519531 441.261719 153.863281 440.289062 155.847656 C 439.242188 157.988281 437.664062 160.285156 435.5625 162.734375 C 433.421875 165.183594 431.355469 167.074219 429.378906 168.394531 C 427.316406 169.753906 426.015625 170.125 425.464844 169.5 C 421.925781 165.414062 417.855469 162.261719 413.269531 160.046875 Z M 443.554688 205.28125 C 439.972656 200.339844 436.6875 197.558594 433.6875 196.933594 C 432.480469 196.699219 431.449219 196.664062 430.597656 196.816406 C 427.132812 198.84375 426.863281 202.128906 429.777344 206.683594 C 430.476562 207.695312 431.355469 208.492188 432.402344 209.074219 C 434.429688 210.28125 437.152344 211.058594 440.574219 211.40625 C 441.898438 211.523438 444.152344 211.558594 447.347656 211.523438 C 446.257812 209.304688 444.992188 207.222656 443.554688 205.28125 Z M 441.101562 160.453125 C 439.972656 159.914062 440.445312 158.023438 442.503906 154.792969 C 443.746094 152.851562 445.054688 151.097656 446.414062 149.542969 C 448.519531 147.089844 450.5625 145.199219 452.546875 143.882812 C 454.296875 142.714844 455.601562 142.34375 456.457031 142.773438 C 461.050781 144.996094 465.113281 148.144531 468.65625 152.226562 C 469.277344 152.929688 469.101562 154.269531 468.128906 156.253906 C 467.082031 158.394531 465.503906 160.691406 463.402344 163.140625 C 461.261719 165.589844 459.195312 167.480469 457.21875 168.800781 C 455.15625 170.160156 453.855469 170.53125 453.304688 169.90625 C 449.765625 165.820312 445.695312 162.667969 441.109375 160.453125 Z M 441.101562 160.453125 " fill-rule="nonzero"/><path fill="currentColor" d="M 504.144531 178.460938 L 480.742188 190.132812 L 480.742188 183.710938 L 504.144531 171.980469 Z M 504.144531 178.460938 " fill-rule="nonzero"/><path fill="currentColor" d="M 486.535156 225.070312 C 485.875 224.097656 485.597656 222.207031 485.71875 219.410156 C 485.792969 216.53125 486.257812 213.554688 487.117188 210.480469 C 487.582031 208.808594 488.226562 207.117188 489.042969 205.402344 C 490.445312 202.640625 491.59375 201.898438 492.488281 203.183594 C 499.6875 213.691406 503.054688 224.308594 502.585938 235.050781 C 501.960938 249.058594 498.148438 260.402344 491.148438 269.082031 C 484.144531 277.679688 471.441406 286.203125 453.035156 294.648438 C 450.703125 295.699219 449.945312 292.765625 450.761719 285.839844 C 451.152344 282.6875 451.835938 279.75 452.804688 277.027344 C 453.855469 274.148438 454.832031 272.515625 455.726562 272.128906 C 463.234375 268.664062 469.074219 265.75 473.238281 263.371094 C 476.742188 261.34375 479.757812 259.382812 482.285156 257.472656 C 483.914062 256.265625 485.316406 255.140625 486.488281 254.085938 C 487.34375 253.34375 488.066406 252.703125 488.648438 252.160156 L 489.699219 251.113281 C 491.023438 249.675781 492.128906 248.332031 493.027344 247.085938 C 493.648438 246.191406 494.082031 245.53125 494.332031 245.101562 C 494.585938 244.671875 494.792969 244.324219 494.953125 244.050781 C 494.445312 241.367188 493.84375 239.09375 493.144531 237.226562 C 491.859375 233.644531 489.664062 229.597656 486.546875 225.085938 Z M 486.535156 225.070312 " fill-rule="nonzero"/></svg></span>
+    <span data-t="foot">RQN · IT, networks &amp; surveillance systems · Riyadh</span>
+    <span class="foot-links">
+      <a href="/privacy" data-t="fp">Privacy</a>
+      <a href="/addad-privacy" data-t="fa">Addad app</a>
+      <span class="mono" data-t="cr">CR 0000000000</span>
+    </span>
+  </div>
+</footer>
+
+<script>
+/* ------------------------------------------------------------
+   Copy is authored natively in each language — not translated.
+   Numerals switch too: Western for EN, Arabic-Indic for AR.
+   ------------------------------------------------------------ */
+const T = {
+  ar:{
+    skip:"تخطّي إلى المحتوى",
+    nav1:"كيف نشتغل", nav2:"الباقات", nav3:"الامتثال", nav4:"تواصل",
+    cta:"اطلب زيارة موقعية", cta2:"شوف الباقات",
+    heroH:"البنية التحتية اللي ما تحتاج تفكر فيها.",
+    heroP:"تمديدات وشبكات وأنظمة مراقبة في الرياض — منفّذة بمخطط، ومسلَّمة بتقرير اختبار، ومغطّاة بعقد دعم.",
+    r1a:"٦ مجالات", r1b:"ننفّذها:",
+    s1:"تمديدات هيكلية", s2:"أنظمة مراقبة", s3:"شبكات لاسلكية",
+    s4:"أنظمة دخول", s5:"خوادم وتخزين", s6:"دعم تقني",
+    r2a:"٤٢٠+", r2b:"موقع منفّذ:",
+    c1:"مستودعات", c2:"فروع تجزئة", c3:"مصانع", c4:"عيادات", c5:"مدارس", c6:"مكاتب ومقاهي",
+    n1:"١٤٠", n2:"٩٦", n3:"٥٨", n4:"٤٧", n5:"٣٣", n6:"٤٦",
+    trustA:"يعتمد علينا ٤٢٠+ موقع في المملكة.",
+    trustB:"من محل بأربع كاميرات إلى مستودع بثلاث طبقات شبكة.",
+    procA:"ثلاث مراحل، وكل مرحلة تطلع منها بورقة.", procB:"مو بوعد شفهي.",
+    w1t:"# مسح موقعي — مستودع ٨٠٠م²",
+    w1a:"المساحة", w1b:"النقاط", w1c:"الكاميرات", w1d:"مسار الكيبل", w1e:"غرفة السيرفر",
+    w1f:"— مخطط مبدئي جاهز للاعتماد",
+    p1h:"١. المسح الموقعي",
+    p1p:"المهندس يقيس ويحدد المسارات وعدد النقاط، ويطلع لك بمخطط قبل شراء أي جهاز.",
+    w2t:"# تقرير اختبار الكيبل — Fluke", w2f:"٤٦/٤٦ نقطة اجتازت الاختبار",
+    p2h:"٢. التنفيذ والاختبار",
+    p2p:"كل نقطة ترقّم وتُختبر بجهاز قياس، والنتيجة تنحفظ باسم النقطة — عشان أي فني بعدنا يعرف وش عندك.",
+    w3t:"# ملف التسليم",
+    w3a:"مخطط الشبكة النهائي", w3b:"تقارير اختبار ٤٦ نقطة", w3c:"جدول مواقع الكاميرات",
+    w3d:"إعدادات مدة الحفظ", w3e:"بيانات الدخول والضمان", w3f:"— جاهز للعرض عند التفتيش",
+    p3h:"٣. التسليم والعقد",
+    p3p:"تستلم ملفاً كاملاً، وتدخل على عقد دعم بزمن استجابة ملزم. ما نركّب ونمشي.",
+    baA:"وش يتغيّر فعلياً.", baB:"ثلاث لحظات تكتشف فيها جودة المقاول.",
+    before:"قبل", with:"مع RQN",
+    ba1h:"عند العطل", ba1o:"تدوّر على فني فاضي", ba1n:"بلاغ واحد — استجابة خلال ٤ ساعات",
+    ba2h:"عند التوسعة", ba2o:"كيبلات بلا ترقيم ولا مخطط", ba2n:"مخطط محدَّث وتقرير لكل نقطة",
+    ba3h:"عند التفتيش", ba3o:"مخالفة ما توقّعتها", ba3n:"ملف مطابقة جاهز للعرض",
+    pathA:"حجم مشروعك يحدد طريقة العمل.", pathB:"ما نبيع نفس الشي للمستودع وللمحل.",
+    t1:"للمنشآت والمشاريع",
+    pa1h:"تنفيذ بعقد ومستوى خدمة",
+    pa1s:"مستودعات، مصانع، مستشفيات، وفروع متعددة.",
+    pa1a:"مسح موقعي ومخطط تمديدات قبل شراء أي جهاز",
+    pa1b:"اتفاقية مستوى خدمة بزمن استجابة ملزم",
+    pa1c:"تقارير صيانة دورية وجرد للأصول",
+    pa1d:"تنفيذ على مراحل بدون إيقاف التشغيل",
+    pa1p:"تسعير حسب المشروع", pa1c2:"اطلب عرضاً فنياً",
+    t2:"للمحلات والمكاتب",
+    pa2h:"باقات جاهزة بسعر واضح",
+    pa2s:"محلات، مقاهي، عيادات، ومكاتب صغيرة.",
+    pa2a:"السعر شامل التركيب — بدون تكاليف مفاجئة",
+    pa2b:"تركيب خلال ٤٨ ساعة من الموافقة",
+    pa2c:"ضمان سنة على الأجهزة والتركيب",
+    pa2d:"تدريب سريع على المشاهدة من الجوال",
+    pa2p:"تبدأ من ٢٬٤٠٠ ر.س", pa2p2:"شامل ٤ كاميرات والتركيب",
+    cmpA:"نسلّم النظام مطابقاً للائحة الكاميرات الأمنية.", cmpB:"قبل التركيب، لا بعده.",
+    cmpP:"كثير من المنشآت تكتشف المخالفة بعد ما تدفع — وتدفع مرة ثانية. نراجع متطلبات نشاطك من البداية.",
+    ck1:"تحديد مواقع التركيب المسموح بها لنشاطك",
+    ck2:"حساب سعة التخزين المطلوبة لمدة الحفظ النظامية",
+    ck3:"ضبط دقة التسجيل ووضوح الوجوه واللوحات",
+    ck4:"ملف تسليم جاهز للعرض عند التفتيش",
+    conA:"اطلب زيارة موقعية.", conB:"الزيارة داخل الرياض بدون رسوم.",
+    conP:"المهندس يجيك للموقع، يقيس، ويطلع لك بعرض مكتوب خلال يومين عمل.",
+    vendorsLabel:"نبني على معدّات تقدر تصيانتها",
+    live:"نرد خلال ساعة في أوقات العمل", wa:"واتساب مباشر",
+    lName:"الاسم", phName:"الاسم الكامل", eName:"اكتب اسمك عشان نعرف نخاطبك.",
+    lPhone:"رقم الجوال", ePhone:"أدخل رقم جوال يبدأ بـ 05.",
+    lType:"نوع المنشأة", eType:"اختر نوع المنشأة.",
+    o0:"اختر...", o1:"مستودع أو مصنع", o2:"محل أو فرع تجزئة", o3:"مكتب إداري",
+    o4:"عيادة أو مستشفى", o5:"مدرسة أو معهد", o6:"غير ذلك",
+    lCity:"المدينة", hCity:"ننفّذ خارج الرياض حسب حجم المشروع.",
+    lMsg:"وش تحتاج؟", phMsg:"مثال: مستودع ٨٠٠ متر — ١٢ كاميرا وشبكة للمكتب الإداري.",
+    hMsg:"اختياري، بس يختصر الوقت علينا وعليك.",
+    send:"أرسل الطلب", sending:"جاري الإرسال...",
+    sBad:"راجع الحقول المعلّمة فوق.", sLoad:"نستقبل طلبك الحين...",
+    sOk:"وصلنا طلبك. بنتواصل معك خلال ساعة في أوقات العمل — وإذا مستعجل، كلّمنا واتساب.",
+    fp:"الخصوصية",
+    fa:"تطبيق عدّاد",
+    foot:"RQN · تقنية المعلومات والشبكات وأنظمة المراقبة · الرياض", cr:"س.ت ٠٠٠٠٠٠٠٠٠٠",
+    city:"الرياض"
+  },
+  en:{
+    send:"Send request", sending:"Sending...",
+    sBad:"Check the highlighted fields above.", sLoad:"Receiving your request...",
+    sOk:"Got it. We'll be in touch within an hour during business hours — if it's urgent, message us on WhatsApp.",
+    city:"Riyadh"
+  }
+};
+
+/* snapshot the English strings straight from the markup */
+document.querySelectorAll('[data-t]').forEach(el => { T.en[el.dataset.t] ??= el.textContent; });
+document.querySelectorAll('[data-ph]').forEach(el => { T.en[el.dataset.ph] ??= el.placeholder; });
+
+const html = document.documentElement;
+const label = document.getElementById('lang-label');
+let lang = 'en';
+
+function apply(next){
+  lang = next;
+  html.lang = lang;
+  html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.title = lang === 'ar'
+    ? 'RQN — شبكات وأنظمة مراقبة'
+    : 'RQN — Networks & Surveillance Systems';
+
+  const d = T[lang];
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const v = d[el.dataset.t]; if (v != null) el.textContent = v;
+  });
+  document.querySelectorAll('[data-ph]').forEach(el => {
+    const v = d[el.dataset.ph]; if (v != null) el.placeholder = v;
+  });
+
+  const wa = document.getElementById('wa');
+  if (wa) wa.href = 'https://wa.me/966570001217?text=' +
+    encodeURIComponent(lang === 'ar' ? 'السلام عليكم، أبغى أطلب زيارة موقعية.' : "Hi RQN, I'd like to request a site visit.");
+
+  label.textContent = lang === 'ar' ? 'EN' : 'عربي';
+  label.lang = lang === 'ar' ? 'en' : 'ar';
+
+  const city = document.getElementById('city');
+  if (city.value === T.en.city || city.value === T.ar.city || !city.value.trim()) city.value = d.city;
+
+  document.getElementById('state').className = 'state';
+}
+
+document.getElementById('lang').addEventListener('click', () => apply(lang === 'en' ? 'ar' : 'en'));
+
+/* ---------------------------------------------------------------
+   Marquee speed control.
+
+   The old version changed `animation-duration` on hover. That does
+   not restart the animation, but it re-maps the elapsed time onto the
+   new duration — so the track snaps to a different position the
+   instant the cursor arrives. That was the "starts over" effect.
+
+   updatePlaybackRate() is built for this: it changes speed while
+   preserving the current position, so the ramp is seamless.
+   --------------------------------------------------------------- */
+(function () {
+  const box = document.querySelector('.marq');
+  const track = document.querySelector('.marq-track');
+  if (!box || !track) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const anim = track.animate(
+    [{ transform: 'translateX(0)' }, { transform: 'translateX(-50%)' }],
+    { duration: 40000, iterations: Infinity, easing: 'linear' }
+  );
+
+  const rate = (r) => anim.updatePlaybackRate
+    ? anim.updatePlaybackRate(r)
+    : (anim.playbackRate = r);
+
+  box.addEventListener('mouseenter', () => rate(2));
+  box.addEventListener('mouseleave', () => rate(1));
+
+  // don't animate an off-screen strip
+  new IntersectionObserver(([e]) => e.isIntersecting ? anim.play() : anim.pause(),
+    { threshold: 0 }).observe(box);
+})();
+
+/* ---------------------------------------------------------------
+   Constellation field — rebuilt to match the Webflow original.
+   Values are not guessed: they were sampled from the screenshot.
+
+     background  #121423   (flat — no gradient, no grid)
+     dot core    #FFFFFF   at alpha 0.50 – 1.00
+     link lines  #FFFFFF   at alpha 0.26 (near) → 0.08 (far)
+
+   Scoped to the hero panel only, so it never animates behind the
+   forms or the test-report panels further down the page.
+   --------------------------------------------------------------- */
+(function () {
+  const cv = document.getElementById('stars');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let w = 0, h = 0, dots = [], raf = null;
+  const LINK = 140;          // px at which two dots stop being linked
+  const A_NEAR = 0.26;       // measured brightest link
+  const A_FAR  = 0.08;       // measured faintest link
+
+  function build() {
+    const r = cv.getBoundingClientRect();
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    w = r.width; h = r.height;
+    cv.width = Math.round(w * dpr);
+    cv.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const n = Math.max(28, Math.min(110, Math.round((w * h) / 11000)));
+    dots = Array.from({ length: n }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.30,
+      vy: (Math.random() - 0.5) * 0.30,
+      r: 0.9 + Math.random() * 1.5,
+      a: 0.50 + Math.random() * 0.50      // the "white but not white" look
+    }));
+  }
+
+  function frame() {
+    ctx.clearRect(0, 0, w, h);
+
+    // links first, so dots sit on top of them
+    ctx.lineWidth = 1;
+    for (let i = 0; i < dots.length; i++) {
+      for (let j = i + 1; j < dots.length; j++) {
+        const dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y;
+        const d = Math.hypot(dx, dy);
+        if (d > LINK) continue;
+        const t = 1 - d / LINK;
+        ctx.strokeStyle = `rgba(255,255,255,${(A_FAR + (A_NEAR - A_FAR) * t).toFixed(3)})`;
+        ctx.beginPath();
+        ctx.moveTo(dots[i].x, dots[i].y);
+        ctx.lineTo(dots[j].x, dots[j].y);
+        ctx.stroke();
+      }
+    }
+
+    for (const p of dots) {
+      ctx.fillStyle = `rgba(255,255,255,${p.a})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (still) continue;
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -20) p.x = w + 20; else if (p.x > w + 20) p.x = -20;
+      if (p.y < -20) p.y = h + 20; else if (p.y > h + 20) p.y = -20;
+    }
+
+    if (!still) raf = requestAnimationFrame(frame);
+  }
+
+  function start() {
+    cancelAnimationFrame(raf);
+    build();
+    frame();
+  }
+
+  start();
+  new ResizeObserver(start).observe(cv);
+
+  // stop burning frames while the hero is off-screen or the tab is hidden
+  const io = new IntersectionObserver(([e]) => {
+    if (e.isIntersecting && !still) { cancelAnimationFrame(raf); frame(); }
+    else cancelAnimationFrame(raf);
+  }, { threshold: 0 });
+  io.observe(cv);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(raf);
+    else if (!still) { cancelAnimationFrame(raf); frame(); }
+  });
+})();
+
+/* header blur appears on scroll, as in the reference block */
+const head=document.querySelector('.head');
+const onScroll=()=>head.classList.toggle('stuck', window.scrollY>40);
+onScroll(); addEventListener('scroll', onScroll, {passive:true});
+
+/* ---------- form ---------- */
+const form = document.getElementById('lead');
+const go = document.getElementById('go');
+const state = document.getElementById('state');
+const show = (cls, html) => { state.className = 'state on ' + cls; state.innerHTML = html; };
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const d = T[lang];
+  const name = document.getElementById('name');
+  const phone = document.getElementById('phone');
+  const type = document.getElementById('type');
+
+  const checks = [
+    ['f-name', name.value.trim().length >= 2],
+    ['f-phone', /^05\d{8}$/.test(phone.value.replace(/[\s-]/g, ''))],
+    ['f-type', type.value !== '']
+  ];
+
+  let ok = true, first = null;
+  checks.forEach(([id, pass]) => {
+    const el = document.getElementById(id);
+    el.classList.toggle('bad', !pass);
+    if (!pass) { ok = false; first = first || el; }
+  });
+
+  if (!ok) {
+    show('err', `<span>${d.sBad}</span>`);
+    first.querySelector('input, select').focus();
+    return;
+  }
+
+  go.disabled = true;
+  go.textContent = d.sending;
+  show('', `<span class="spin"></span><span class="mf">${d.sLoad}</span>`);
+
+  await new Promise(r => setTimeout(r, 1100));
+
+  go.disabled = false;
+  go.textContent = d.send;
+  show('ok', `<span>${d.sOk}</span>`);
+  form.reset();
+  document.getElementById('city').value = d.city;
+});
+</script>
+</body>
+</html>
