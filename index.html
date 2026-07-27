@@ -177,8 +177,7 @@ html[dir="rtl"] .nav{transform:translateX(50%)}
    original the parent was static and the panel escaped the section. */
 .hero{position:relative; padding-block:150px 60px; overflow:hidden}
 .hero-media{
-  position:absolute; inset:4px; border-radius:34px; overflow:hidden;
-  border:1px solid rgb(238 238 238 / .06);
+  position:absolute; inset:0; border-radius:0; overflow:hidden;
   background:var(--background);   /* measured from the Webflow build: flat #121423 */
 }
 #stars{position:absolute; inset:0; width:100%; height:100%; display:block; pointer-events:none}
@@ -198,7 +197,6 @@ html[dir="ltr"] .btn-pill svg{transform:scaleX(-1)}
 html[dir="ltr"] .btn-pill:hover svg{transform:scaleX(-1) translateX(-3px)}
 @media(max-width:900px){
   .hero{padding-block:110px 40px}
-  .hero-media{border-radius:22px}
   .hero .h1{max-width:100%}
 }
 
@@ -211,11 +209,15 @@ html[dir="ltr"] .btn-pill:hover svg{transform:scaleX(-1) translateX(-3px)}
   font-size:13px; color:var(--muted-foreground); text-align:end;
 }
 .marq{position:relative; flex:1; overflow:hidden; padding-block:22px; min-width:0}
-.marq-track{display:flex; width:max-content; gap:96px; animation:marq 40s linear infinite}
-.marq:hover .marq-track{animation-duration:20s}
-@keyframes marq{from{transform:translateX(0)} to{transform:translateX(-50%)}}
-html[dir="ltr"] .marq-track{animation-name:marq-ltr}
-@keyframes marq-ltr{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+/* The seam used to jump because `gap` sits BETWEEN items: half the
+   track was 7 names + 6.5 gaps, but the loop point needs 7. Each set
+   is now self-contained with its own trailing gap, so translating
+   exactly -50% lands one name on top of its twin. No visible reset.
+   Direction is forced to ltr — the names are Latin, and letting the
+   track flip with the page was a second source of jumping. */
+.marq{direction:ltr}
+.marq-track{display:flex; width:max-content}
+.marq-set{display:flex; gap:96px; padding-inline-end:96px}
 .marq-track span{font-size:18px; font-weight:600; color:rgb(152 155 174 / .62); white-space:nowrap}
 /* progressive blur: stacked layers, each masked further in */
 .fade{position:absolute; top:0; height:100%; width:88px; pointer-events:none; z-index:2}
@@ -404,7 +406,7 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
   <div class="marq-row">
     <p class="marq-label" data-t="vendorsLabel">Built on hardware you can service</p>
     <div class="marq">
-      <div class="marq-track"><span>Hikvision</span><span>Ubiquiti</span><span>Cisco</span><span>Aruba</span><span>Dahua</span><span>Synology</span><span>Fortinet</span><span>Hikvision</span><span>Ubiquiti</span><span>Cisco</span><span>Aruba</span><span>Dahua</span><span>Synology</span><span>Fortinet</span></div>
+      <div class="marq-track"><div class="marq-set"><span>Hikvision</span><span>Ubiquiti</span><span>Cisco</span><span>Aruba</span><span>Dahua</span><span>Synology</span><span>Fortinet</span></div><div class="marq-set"><span>Hikvision</span><span>Ubiquiti</span><span>Cisco</span><span>Aruba</span><span>Dahua</span><span>Synology</span><span>Fortinet</span></div></div>
       <div class="fade s"><i></i><i></i><i></i></div>
       <div class="fade e"><i></i><i></i><i></i></div>
     </div>
@@ -768,6 +770,40 @@ function apply(next){
 }
 
 document.getElementById('lang').addEventListener('click', () => apply(lang === 'en' ? 'ar' : 'en'));
+
+/* ---------------------------------------------------------------
+   Marquee speed control.
+
+   The old version changed `animation-duration` on hover. That does
+   not restart the animation, but it re-maps the elapsed time onto the
+   new duration — so the track snaps to a different position the
+   instant the cursor arrives. That was the "starts over" effect.
+
+   updatePlaybackRate() is built for this: it changes speed while
+   preserving the current position, so the ramp is seamless.
+   --------------------------------------------------------------- */
+(function () {
+  const box = document.querySelector('.marq');
+  const track = document.querySelector('.marq-track');
+  if (!box || !track) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const anim = track.animate(
+    [{ transform: 'translateX(0)' }, { transform: 'translateX(-50%)' }],
+    { duration: 40000, iterations: Infinity, easing: 'linear' }
+  );
+
+  const rate = (r) => anim.updatePlaybackRate
+    ? anim.updatePlaybackRate(r)
+    : (anim.playbackRate = r);
+
+  box.addEventListener('mouseenter', () => rate(2));
+  box.addEventListener('mouseleave', () => rate(1));
+
+  // don't animate an off-screen strip
+  new IntersectionObserver(([e]) => e.isIntersecting ? anim.play() : anim.pause(),
+    { threshold: 0 }).observe(box);
+})();
 
 /* ---------------------------------------------------------------
    Constellation field — rebuilt to match the Webflow original.
