@@ -116,7 +116,6 @@ html[lang="ar"] .prose{ line-height:1.9 }
 /* ---------- brand hairline ----------
    Replaces the old four-strand cable ribbon: the brand purple is
    strong enough that a second colour system fights it. One line. */
-.strands{height:2px; background:var(--brand)}
 
 /* ---------- logo ----------
    Supplied flat #121423 — identical to the site background, so it was
@@ -209,7 +208,7 @@ html[dir="ltr"] .btn-pill:hover svg{transform:scaleX(-1) translateX(-3px)}
 }
 
 /* ---------- marquee (InfiniteSlider + ProgressiveBlur, in CSS) ---------- */
-.marq-wrap{border-block:1px solid var(--border); padding-block:8px}
+.marq-wrap{padding-block:8px}
 .marq-row{max-width:var(--maxw); margin-inline:auto; padding-inline:var(--px); display:flex; align-items:center; gap:0}
 .marq{position:relative; flex:1; overflow:hidden; padding-block:22px; min-width:0}
 /* The seam used to jump because `gap` sits BETWEEN items: half the
@@ -396,7 +395,6 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
 </head>
 <body>
 <a class="skip" href="#main" data-t="skip">Skip to content</a>
-<div class="strands" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
 <header class="head">
   <div class="head-in">
@@ -444,7 +442,6 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
 <!-- VENDOR MARQUEE -->
 <div class="marq-wrap up" style="animation-delay:.6s">
   <div class="marq-row">
-    <p class="marq-label" data-t="vendorsLabel">Hardware we install</p>
     <div class="marq">
       <div class="marq-track"><div class="marq-set"><span>Hikvision</span><span>Ubiquiti</span><span>Cisco</span><span>Aruba</span><span>Dahua</span><span>Synology</span><span>Fortinet</span></div><div class="marq-set"><span>Hikvision</span><span>Ubiquiti</span><span>Cisco</span><span>Aruba</span><span>Dahua</span><span>Synology</span><span>Fortinet</span></div></div>
       <div class="fade s"><i></i><i></i><i></i></div>
@@ -771,7 +768,6 @@ const T = {
     s7:"التطبيقات والبرامج الخاصة",
     d7:"تطبيقات جوال لعملائك أو لموظفيك، ومواقع ومتاجر إلكترونية — مبنية على طريقة شغل منشأتك، مو مقصوصة على قالب جاهز. ونفس الفريق اللي مدّد الموقع هو اللي يربط البرنامج فيه.",
     g7:"الكود ولوحة التحكم وكل حساب باسمك أنت",
-    vendorsLabel:"أجهزة نركّبها",
     r2a:"منشآت", r2b:"جاهزين لها:",
     c1:"مستودعات", c2:"فروع تجزئة", c3:"مصانع", c4:"عيادات", c5:"مدارس", c6:"مكاتب ومقاهي",
     trustA:"شغل موثّق من أول نقطة إلى آخر تسليم.",
