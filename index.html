@@ -11,31 +11,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   RQN — bilingual, English primary.
 
-   The whole point of this file: typography is set PER LANGUAGE,
-   not as one compromise.
-     en → IBM Plex Sans,        tracking -0.022em, leading 1.06
-     ar → IBM Plex Sans Arabic, tracking 0,        leading 1.45
-   Arabic is a joined script: negative tracking damages the
-   letter connections, and tight leading collides descenders
-   with the dots below them.
-
-   Both faces are from the IBM Plex superfamily, so the brand
-   holds its shape across the switch.
-   ============================================================ */
 :root{
-  color-scheme: dark;   /* without this, Android Chrome auto-dark
-                           inverts the page and it renders LIGHT */
-  /* ---- brand ------------------------------------------------
-     #9441BA  brand      → BACKGROUNDS only (4.86:1 with ink on top)
-     #A861C8  brand-text → the lightened tint for links / small text
-                           (4.53:1 on the background — the raw brand
-                            colour only reaches 3.24:1 and fails AA)
-     #121423  background → hue 233°, so every neutral below is built
-                           on 233° too. Nothing here is a flat grey.
-     ------------------------------------------------------------ */
+  color-scheme: dark;
+
   --brand:#9441BA;
   --brand-text:#A861C8;
   --brand-deep:#7B369C;
@@ -45,10 +24,10 @@
   --muted:#212336;
   --foreground:#EEEEEE;
   --muted-foreground:#989BAE;
-  --faint:#65687B;          /* decorative only — 3.32:1, never body text */
+  --faint:#65687B;
   --border:#313449;
 
-  --ok:#3E9C6A;             /* semantic, not brand */
+  --ok:#3E9C6A;
 
   --mono:"IBM Plex Mono", ui-monospace, monospace;
   --r:8px;
@@ -69,7 +48,6 @@ a{color:inherit; text-decoration:none}
 svg{display:block}
 ::selection{background:var(--brand); color:var(--foreground)}
 
-/* ---------- PER-LANGUAGE TYPE SETTINGS ---------- */
 html[lang="en"] body{
   font-family:"IBM Plex Sans", system-ui, sans-serif;
   line-height:1.65; letter-spacing:0;
@@ -96,7 +74,6 @@ html[lang="ar"] .prose{ line-height:1.9 }
 .mono{font-family:var(--mono); font-variant-numeric:tabular-nums}
 .mf{color:var(--muted-foreground)}
 
-/* ---------- load sequence: blur-in ---------- */
 @keyframes lp-hero-in{
   from{opacity:0; filter:blur(14px); transform:translateY(14px)}
   to  {opacity:1; filter:blur(0);    transform:none}
@@ -113,18 +90,6 @@ html[lang="ar"] .prose{ line-height:1.9 }
   *{transition-duration:.01ms !important}
 }
 
-/* ---------- brand hairline ----------
-   Replaces the old four-strand cable ribbon: the brand purple is
-   strong enough that a second colour system fights it. One line. */
-
-/* ---------- logo ----------
-   Supplied flat #121423 — identical to the site background, so it was
-   invisible. Fills are now currentColor and it inherits its context.
-
-   The Arabic and Latin wordmarks INTERLOCK vertically (Arabic y142–296,
-   Latin y266–299): the Latin sits in the negative space under the left
-   of the Arabic. There is no separable icon here, so the lockup is used
-   whole and the header is sized around it instead. */
 .brand{display:inline-flex; align-items:center; color:var(--foreground); transition:color .18s}
 .brand:hover{color:var(--brand-text)}
 .mark{height:40px; width:auto; display:block}
@@ -132,11 +97,6 @@ html[lang="ar"] .prose{ line-height:1.9 }
 .lockup{height:56px; width:auto; display:block}
 @media(max-width:520px){ .mark{height:32px} }
 
-/* ---------- header ----------
-   The header keeps a FIXED direction (ltr) in both languages, so the
-   logo always sits on the left and the actions on the right — the
-   lockup no longer jumps sides when the page flips to Arabic. Only
-   the Arabic text nodes inside it are put back to rtl. */
 .head{position:sticky; top:0; z-index:60; background:rgba(18,20,35,.86); background:color-mix(in srgb,var(--background) 82%,transparent); backdrop-filter:blur(12px); border-block-end:1px solid var(--border)}
 .head-in{max-width:var(--maxw); margin-inline:auto; padding-inline:var(--px); height:72px; display:flex; align-items:center; position:relative; direction:ltr}
 .brand{font-family:var(--mono); font-size:16px; font-weight:500; letter-spacing:.2em}
@@ -153,7 +113,7 @@ html[lang="ar"] .head-in .lang span{direction:rtl}
   display:inline-flex; align-items:center; justify-content:center; gap:8px;
   height:32px; padding-inline:16px; border-radius:999px; cursor:pointer;
   font-family:inherit; font-size:13px; font-weight:500; border:0;
-  background:var(--brand); color:var(--foreground);   /* 4.86:1 — verified */
+  background:var(--brand); color:var(--foreground);
   transition:background .18s ease, color .18s ease, transform .1s ease;
 }
 .btn:hover{background:var(--brand-deep)}
@@ -165,8 +125,6 @@ html[lang="ar"] .head-in .lang span{direction:rtl}
 .btn-lg{height:44px; padding-inline:24px; font-size:15px}
 .btn[disabled]{opacity:.5; cursor:not-allowed}
 
-/* language switch — min-width so the pill doesn't resize when the
-   label swaps between "عربي" and "EN" */
 .lang{
   height:32px; padding-inline:12px; border-radius:999px; cursor:pointer;
   background:transparent; border:1px solid var(--border); color:var(--muted-foreground);
@@ -177,15 +135,10 @@ html[lang="ar"] .head-in .lang span{direction:rtl}
 .lang:hover{color:var(--foreground); background:var(--muted)}
 .lang span[lang="ar"]{font-family:"IBM Plex Sans Arabic", sans-serif; letter-spacing:0}
 
-/* ---------- hero (Tailark hero-section-5 layout, hand-built) ----------
-   The React block relied on Tailwind + motion. Same result here in
-   plain CSS so the file stays one drop-in page with no build step.
-   The media panel is `position:relative` on its PARENT — in the
-   original the parent was static and the panel escaped the section. */
 .hero{position:relative; padding-block:150px 60px; overflow:hidden}
 .hero-media{
   position:absolute; inset:0; border-radius:0; overflow:hidden;
-  background:var(--background);   /* measured from the Webflow build: flat #121423 */
+  background:var(--background);
 }
 #stars{position:absolute; inset:0; width:100%; height:100%; display:block; pointer-events:none}
 .hero-media video{width:100%; height:100%; object-fit:cover; opacity:.32; display:block}
@@ -207,21 +160,15 @@ html[dir="ltr"] .btn-pill:hover svg{transform:scaleX(-1) translateX(-3px)}
   .hero .h1{max-width:100%}
 }
 
-/* ---------- marquee (InfiniteSlider + ProgressiveBlur, in CSS) ---------- */
 .marq-wrap{padding-block:8px}
 .marq-row{max-width:var(--maxw); margin-inline:auto; padding-inline:var(--px); display:flex; align-items:center; gap:0}
 .marq{position:relative; flex:1; overflow:hidden; padding-block:22px; min-width:0}
-/* The seam used to jump because `gap` sits BETWEEN items: half the
-   track was 7 names + 6.5 gaps, but the loop point needs 7. Each set
-   is now self-contained with its own trailing gap, so translating
-   exactly -50% lands one name on top of its twin. No visible reset.
-   Direction is forced to ltr — the names are Latin, and letting the
-   track flip with the page was a second source of jumping. */
+
 .marq{direction:ltr}
 .marq-track{display:flex; width:max-content}
 .marq-set{display:flex; gap:96px; padding-inline-end:96px}
 .marq-track span{font-size:18px; font-weight:600; color:rgb(152 155 174 / .62); white-space:nowrap}
-/* progressive blur: stacked layers, each masked further in */
+
 .fade{position:absolute; top:0; height:100%; width:88px; pointer-events:none; z-index:2}
 .fade.s{inset-inline-start:0}
 .fade.e{inset-inline-end:0}
@@ -243,11 +190,9 @@ html[dir="ltr"] .btn-pill:hover svg{transform:scaleX(-1) translateX(-3px)}
 }
 @media (prefers-reduced-motion: reduce){ .marq-track{animation:none} }
 
-/* header gains its blur only after scroll, like the reference */
 .head{background:transparent; border-block-end-color:transparent; transition:background .3s, border-color .3s}
 .head.stuck{background:rgba(18,20,35,.6); background:color-mix(in srgb,var(--background) 60%,transparent); border-block-end-color:var(--border)}
 
-/* ---------- scroll rows ---------- */
 .rows{display:grid; gap:56px; padding-block:24px 76px}
 .row-head{display:flex; align-items:center; gap:16px; margin-block-end:14px}
 .row-head h4{font-size:15px; font-weight:500; white-space:nowrap}
@@ -264,7 +209,6 @@ html[dir="ltr"] .btn-pill:hover svg{transform:scaleX(-1) translateX(-3px)}
 .pill:hover{color:var(--foreground); border-color:var(--brand-text); background:var(--muted)}
 .pill b{font-family:var(--mono); font-size:11px; font-weight:400; color:rgb(152 155 174 / .5)}
 
-/* ---------- sections ---------- */
 .sec{padding-block:76px}
 .h2{max-width:56ch; font-size:clamp(24px,3.1vw,38px); font-weight:500}
 .vendors{margin-block-start:52px; display:flex; flex-wrap:wrap; gap:20px 28px}
@@ -272,12 +216,6 @@ html[dir="ltr"] .btn-pill:hover svg{transform:scaleX(-1) translateX(-3px)}
 .vendors span:hover{opacity:.9}
 .vendors i{width:6px; height:6px; border-radius:2px; background:var(--muted-foreground); display:block}
 
-/* ---------- services grid ----------
-   The card's structural device is the DELIVERABLE line, not a
-   decorative icon or an 01/02/03 counter: these services are not a
-   sequence, and the one thing the whole page argues is that every
-   service ends with a document you can hold. So each card ends with
-   exactly that, on a hairline, in the utility face. */
 .svcs{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-block-start:48px}
 .svc{
   border:1px solid var(--border); border-radius:12px; background:var(--surface);
@@ -297,15 +235,12 @@ html[dir="ltr"] .btn-pill:hover svg{transform:scaleX(-1) translateX(-3px)}
   text-transform:uppercase; color:var(--brand-text); white-space:nowrap;
 }
 html[lang="ar"] .give b{font-family:inherit; font-size:11.5px; letter-spacing:0; text-transform:none}
-/* the custom-software card is the odd one out — it's the only service
-   that isn't cable in a wall, so it gets the full width and the brand
-   edge instead of a seventh identical box */
+
 .svc.wide{grid-column:1 / -1; border-color:color-mix(in srgb, var(--brand-text) 45%, var(--border))}
 .svc.wide p{max-width:60ch; flex:0}
 @media(max-width:1000px){ .svcs{grid-template-columns:repeat(2,1fr)} }
 @media(max-width:640px){ .svcs{grid-template-columns:1fr} }
 
-/* ---------- process panels ---------- */
 .panels{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-block-start:48px}
 .panel{border:1px solid var(--border); border-radius:12px; background:var(--surface); overflow:hidden; display:flex; flex-direction:column}
 .panel .win{
@@ -321,7 +256,6 @@ html[lang="ar"] .give b{font-family:inherit; font-size:11.5px; letter-spacing:0;
 .panel p{margin-block-start:6px; font-size:13.5px; color:var(--muted-foreground)}
 @media(max-width:900px){ .panels{grid-template-columns:1fr} }
 
-/* ---------- before / after ---------- */
 .ba{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-block-start:48px}
 .ba-cell{border:1px solid var(--border); border-radius:12px; padding:22px; background:var(--surface)}
 .ba-cell h4{font-size:15px; font-weight:500; margin-block-end:18px}
@@ -331,7 +265,6 @@ html[lang="ar"] .give b{font-family:inherit; font-size:11.5px; letter-spacing:0;
 .ba-line .new{color:rgb(238 238 238 / .85); font-size:14px}
 @media(max-width:900px){ .ba{grid-template-columns:1fr} }
 
-/* ---------- paths ---------- */
 .paths{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-block-start:48px}
 .path{border:1px solid var(--border); border-radius:12px; padding:28px; background:var(--surface); display:flex; flex-direction:column}
 .path .tag{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:rgb(152 155 174 / .5)}
@@ -346,14 +279,12 @@ html[lang="ar"] .path .tag{font-family:"IBM Plex Sans Arabic",sans-serif; letter
 .path .price small{font-size:13px; color:rgb(152 155 174 / .5); font-weight:400; margin-inline-start:8px}
 @media(max-width:900px){ .paths{grid-template-columns:1fr} }
 
-/* ---------- compliance ---------- */
 .comply{display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; margin-block-start:44px}
 .ck{list-style:none; margin:0; padding:0; display:grid; gap:16px}
 .ck li{display:grid; grid-template-columns:auto 1fr; gap:12px; font-size:14.5px; align-items:baseline; color:rgb(238 238 238 / .85)}
 .ck svg{color:var(--ok); transform:translateY(3px)}
 @media(max-width:900px){ .comply{grid-template-columns:1fr; gap:28px} }
 
-/* ---------- contact ---------- */
 .contact{display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; margin-block-start:44px}
 .field{display:grid; gap:6px; margin-block-end:16px}
 .field label{font-size:13px; color:var(--muted-foreground)}
@@ -383,7 +314,6 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
 .row-head h4 span:first-child{color:var(--brand-text)}
 @media(max-width:900px){ .contact{grid-template-columns:1fr; gap:28px} .two{grid-template-columns:1fr; gap:0} }
 
-/* ---------- footer ---------- */
 .foot{border-block-start:1px solid var(--border); padding-block:22px; margin-block-start:40px}
 .foot-links{display:flex; flex-wrap:wrap; gap:18px; align-items:center}
 .foot-links a{color:var(--muted-foreground); text-decoration:none; transition:color .18s}
@@ -418,11 +348,9 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
 
 <main id="main">
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-media" aria-hidden="true">
-    <!-- drop your own clip at media/site-loop.mp4 — until then the panel
-         renders as a lit technical grid, so it never looks broken -->
+
     <canvas id="stars"></canvas>
   </div>
 
@@ -439,7 +367,6 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
   </div>
 </section>
 
-<!-- VENDOR MARQUEE -->
 <div class="marq-wrap up" style="animation-delay:.6s">
   <div class="marq-row">
     <div class="marq">
@@ -450,7 +377,6 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
   </div>
 </div>
 
-<!-- FACILITY TYPES + STANDARDS -->
 <section class="wrap sec" style="padding-block:56px 0">
   <div class="rows" style="padding-block:24px 40px">
     <div class="up" style="animation-delay:.62s">
@@ -469,7 +395,6 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
   <h2 class="h2"><span data-t="trustA">Documented work, from the first point to final handover.</span> <span class="mf" data-t="trustB">A drawing before we start, a test report for every point, and a complete handover file in your name — backed by a support contract with a four-hour response time.</span></h2>
 </section>
 
-<!-- SERVICES -->
 <section class="wrap sec" id="services" style="padding-block-start:0">
   <h2 class="h2"><span data-t="svcA">Seven services, one contractor.</span> <span class="mf" data-t="svcB">From the cable inside the wall to the app in your customer's hand.</span></h2>
   <div class="svcs">
@@ -519,7 +444,6 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
   </div>
 </section>
 
-<!-- PROCESS -->
 <section class="wrap sec" id="how" style="padding-block-start:0">
   <h2 class="h2"><span data-t="procA">Three stages. Each one ends with a document.</span> <span class="mf" data-t="procB">Not a verbal promise.</span></h2>
   <div class="panels">
@@ -572,7 +496,6 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
   </div>
 </section>
 
-<!-- BEFORE / AFTER -->
 <section class="wrap sec" style="padding-block-start:0">
   <h2 class="h2"><span data-t="baA">What actually changes.</span> <span class="mf" data-t="baB">Three moments where you find out how good your contractor was.</span></h2>
   <div class="ba">
@@ -600,7 +523,6 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
   </div>
 </section>
 
-<!-- PATHS -->
 <section class="wrap sec" id="paths" style="padding-block-start:0">
   <h2 class="h2"><span data-t="pathA">The size of your project decides how we work.</span> <span class="mf" data-t="pathB">We don't sell the warehouse and the corner shop the same thing.</span></h2>
   <div class="paths">
@@ -638,7 +560,6 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
   </div>
 </section>
 
-<!-- COMPLIANCE -->
 <section class="wrap sec" id="compliance" style="padding-block-start:0">
   <div class="comply">
     <div>
@@ -654,7 +575,6 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
   </div>
 </section>
 
-<!-- CONTACT -->
 <section class="wrap sec" id="contact" style="padding-block-start:0">
   <div class="contact">
     <div>
@@ -732,10 +652,7 @@ html[lang="ar"] .live{font-family:inherit; letter-spacing:0; font-size:12.5px}
 </footer>
 
 <script>
-/* ------------------------------------------------------------
-   Copy is authored natively in each language — not translated.
-   Numerals switch too: Western for EN, Arabic-Indic for AR.
-   ------------------------------------------------------------ */
+
 const T = {
   ar:{
     skip:"تخطّي إلى المحتوى",
@@ -840,7 +757,6 @@ const T = {
   }
 };
 
-/* snapshot the English strings straight from the markup */
 document.querySelectorAll('[data-t]').forEach(el => { T.en[el.dataset.t] ??= el.textContent; });
 document.querySelectorAll('[data-ph]').forEach(el => { T.en[el.dataset.ph] ??= el.placeholder; });
 
@@ -879,17 +795,6 @@ function apply(next){
 
 document.getElementById('lang').addEventListener('click', () => apply(lang === 'en' ? 'ar' : 'en'));
 
-/* ---------------------------------------------------------------
-   Marquee speed control.
-
-   The old version changed `animation-duration` on hover. That does
-   not restart the animation, but it re-maps the elapsed time onto the
-   new duration — so the track snaps to a different position the
-   instant the cursor arrives. That was the "starts over" effect.
-
-   updatePlaybackRate() is built for this: it changes speed while
-   preserving the current position, so the ramp is seamless.
-   --------------------------------------------------------------- */
 (function () {
   const box = document.querySelector('.marq');
   const track = document.querySelector('.marq-track');
@@ -908,22 +813,10 @@ document.getElementById('lang').addEventListener('click', () => apply(lang === '
   box.addEventListener('mouseenter', () => rate(2));
   box.addEventListener('mouseleave', () => rate(1));
 
-  // don't animate an off-screen strip
   new IntersectionObserver(([e]) => e.isIntersecting ? anim.play() : anim.pause(),
     { threshold: 0 }).observe(box);
 })();
 
-/* ---------------------------------------------------------------
-   Constellation field — rebuilt to match the Webflow original.
-   Values are not guessed: they were sampled from the screenshot.
-
-     background  #121423   (flat — no gradient, no grid)
-     dot core    #FFFFFF   at alpha 0.50 – 1.00
-     link lines  #FFFFFF   at alpha 0.26 (near) → 0.08 (far)
-
-   Scoped to the hero panel only, so it never animates behind the
-   forms or the test-report panels further down the page.
-   --------------------------------------------------------------- */
 (function () {
   const cv = document.getElementById('stars');
   if (!cv) return;
@@ -931,9 +824,9 @@ document.getElementById('lang').addEventListener('click', () => apply(lang === '
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   let w = 0, h = 0, dots = [], raf = null;
-  const LINK = 140;          // px at which two dots stop being linked
-  const A_NEAR = 0.26;       // measured brightest link
-  const A_FAR  = 0.08;       // measured faintest link
+  const LINK = 140;
+  const A_NEAR = 0.26;
+  const A_FAR  = 0.08;
 
   function build() {
     const r = cv.getBoundingClientRect();
@@ -957,7 +850,6 @@ document.getElementById('lang').addEventListener('click', () => apply(lang === '
   function frame() {
     ctx.clearRect(0, 0, w, h);
 
-    // links first, so dots sit on top of them
     ctx.lineWidth = 1;
     for (let i = 0; i < dots.length; i++) {
       for (let j = i + 1; j < dots.length; j++) {
@@ -997,7 +889,6 @@ document.getElementById('lang').addEventListener('click', () => apply(lang === '
   start();
   new ResizeObserver(start).observe(cv);
 
-  // stop burning frames while the hero is off-screen or the tab is hidden
   const io = new IntersectionObserver(([e]) => {
     if (e.isIntersecting && !still) { cancelAnimationFrame(raf); frame(); }
     else cancelAnimationFrame(raf);
@@ -1010,12 +901,10 @@ document.getElementById('lang').addEventListener('click', () => apply(lang === '
   });
 })();
 
-/* header blur appears on scroll, as in the reference block */
 const head=document.querySelector('.head');
 const onScroll=()=>head.classList.toggle('stuck', window.scrollY>40);
 onScroll(); addEventListener('scroll', onScroll, {passive:true});
 
-/* ---------- form ---------- */
 const form = document.getElementById('lead');
 const go = document.getElementById('go');
 const state = document.getElementById('state');
