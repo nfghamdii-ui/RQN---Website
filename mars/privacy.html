@@ -284,12 +284,13 @@ details .a p{margin-block-start:0}
 <li><a href="#ai" data-t="t3">3. AI features</a></li>
 <li><a href="#clips" data-t="t4">4. "Hear it from people" clips</a></li>
 <li><a href="#ip" data-t="t5">5. IP address</a></li>
-<li><a href="#reminders" data-t="t6">6. Reminders</a></li>
-<li><a href="#storage" data-t="t7">7. Where data is stored</a></li>
-<li><a href="#delete" data-t="t8">8. Deleting your data</a></li>
-<li><a href="#children" data-t="t9">9. Children</a></li>
-<li><a href="#changes" data-t="t10">10. Changes</a></li>
-<li><a href="#contact" data-t="t11">11. Contact</a></li>
+<li><a href="#subs" data-t="tsub">6. Subscriptions</a></li>
+<li><a href="#reminders" data-t="t6">7. Reminders</a></li>
+<li><a href="#storage" data-t="t7">8. Where data is stored</a></li>
+<li><a href="#delete" data-t="t8">9. Deleting your data</a></li>
+<li><a href="#children" data-t="t9">10. Children</a></li>
+<li><a href="#changes" data-t="t10">11. Changes</a></li>
+<li><a href="#contact" data-t="t11">12. Contact</a></li>
 </ol></nav>
 
 <section id="acct"><h2 class="h2" data-t="h1_">1. Using the app without an account</h2>
@@ -313,22 +314,25 @@ details .a p{margin-block-start:0}
 <section id="ip"><h2 class="h2" data-t="h5_">5. IP address</h2>
 <p class="prose" data-t="p5">To protect the service from abuse, we log your IP address with the time of each AI or clip request, and delete it automatically after 7 days.</p></section>
 
-<section id="reminders"><h2 class="h2" data-t="h6_">6. Reminders</h2>
+<section id="subs"><h2 class="h2" data-t="hsub">6. Subscriptions</h2>
+<p class="prose" data-t="psub">MARS is available with a monthly or yearly subscription. Purchases and payments are handled entirely by the Apple App Store or Google Play; we never see your card or payment details. We only receive your subscription status (its type and renewal or expiry date) to unlock features for you. Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period, and you can manage or cancel them in your App Store or Google Play account settings.</p></section>
+
+<section id="reminders"><h2 class="h2" data-t="h6_">7. Reminders</h2>
 <p class="prose" data-t="p6">The daily reminder is scheduled on your device and never passes through our servers.</p></section>
 
-<section id="storage"><h2 class="h2" data-t="h7_">7. Where data is stored</h2>
-<p class="prose" data-t="p7">Our servers are hosted by Supabase in the United Kingdom (London). Our providers process data on our behalf under their own agreements: Supabase (hosting), Anthropic (AI), Apple and Google (sign-in).</p></section>
+<section id="storage"><h2 class="h2" data-t="h7_">8. Where data is stored</h2>
+<p class="prose" data-t="p7">Our servers are hosted by Supabase in the United Kingdom (London). Our providers process data on our behalf under their own agreements: Supabase (hosting), Anthropic (AI), Apple and Google (sign-in and payments).</p></section>
 
-<section id="delete"><h2 class="h2" data-t="h8_">8. Deleting your data</h2>
+<section id="delete"><h2 class="h2" data-t="h8_">9. Deleting your data</h2>
 <p class="prose" data-t="p8">You can delete your account at any time in Settings → Account → Delete account. The account and its stored progress are deleted from our servers immediately. Data on your device is removed when you delete the app.</p></section>
 
-<section id="children"><h2 class="h2" data-t="h9_">9. Children</h2>
+<section id="children"><h2 class="h2" data-t="h9_">10. Children</h2>
 <p class="prose" data-t="p9">MARS is not directed at children under 13, and we don't knowingly collect their data.</p></section>
 
-<section id="changes"><h2 class="h2" data-t="h10_">10. Changes</h2>
+<section id="changes"><h2 class="h2" data-t="h10_">11. Changes</h2>
 <p class="prose" data-t="p10">If we change this policy we'll update the date above, and tell you in the app if the change is significant.</p></section>
 
-<section id="contact"><h2 class="h2" data-t="h11_">11. Contact</h2>
+<section id="contact"><h2 class="h2" data-t="h11_">12. Contact</h2>
 <div class="card"><h3 data-t="c_h">Privacy inquiries</h3>
 <p data-t="c1"><strong>Email:</strong> <a href="mailto:naif@rqn.sa">naif@rqn.sa</a></p></div>
 </section>
@@ -366,12 +370,12 @@ const T = {ar: {
 "t3": "٣. الذكاء الاصطناعي",
 "t4": "٤. مقاطع «اسمعها من الناس»",
 "t5": "٥. عنوان IP",
-"t6": "٦. التذكيرات",
-"t7": "٧. أين تُحفظ البيانات",
-"t8": "٨. حذف بياناتك",
-"t9": "٩. الأطفال",
-"t10": "١٠. التغييرات",
-"t11": "١١. تواصل معنا",
+"t6": "٧. التذكيرات",
+"t7": "٨. أين تُحفظ البيانات",
+"t8": "٩. حذف بياناتك",
+"t9": "١٠. الأطفال",
+"t10": "١١. التغييرات",
+"t11": "١٢. تواصل معنا",
 "h1_": "١. استخدام التطبيق بدون حساب",
 "p1": "يمكنك استخدام MARS دون إنشاء حساب. في هذه الحالة تبقى محفوظاتك وتقدّمك وإعداداتك على جهازك فقط.",
 "h2_": "٢. عند تسجيل الدخول",
@@ -386,19 +390,22 @@ const T = {ar: {
 "p4": "تُعرض المقاطع عبر خدمة YouGlish ومشغّل YouTube. عند تشغيلها قد تجمع YouTube بيانات وفق سياسة خصوصية Google (رابط: <a href=\"https://policies.google.com/privacy\" target=\"_blank\" rel=\"noopener\">https://policies.google.com/privacy</a>).",
 "h5_": "٥. عنوان IP",
 "p5": "لحماية الخدمة من الإساءة نسجّل عنوان IP مع وقت الطلب عند استخدام ميزات الذكاء الاصطناعي والمقاطع، ونحذفه تلقائياً بعد 7 أيام.",
-"h6_": "٦. التذكيرات",
+"h6_": "٧. التذكيرات",
 "p6": "التذكير اليومي يُجدوَل على جهازك، ولا يمر عبر خوادمنا.",
-"h7_": "٧. أين تُحفظ البيانات",
-"p7": "تُستضاف خوادمنا لدى Supabase في المملكة المتحدة (لندن). يعالج مزوّدونا البيانات نيابةً عنّا وفق اتفاقياتهم: Supabase للاستضافة، وAnthropic للذكاء الاصطناعي، وApple وGoogle لتسجيل الدخول.",
-"h8_": "٨. حذف بياناتك",
+"h7_": "٨. أين تُحفظ البيانات",
+"p7": "تُستضاف خوادمنا لدى Supabase في المملكة المتحدة (لندن). يعالج مزوّدونا البيانات نيابةً عنّا وفق اتفاقياتهم: Supabase للاستضافة، وAnthropic للذكاء الاصطناعي، وApple وGoogle لتسجيل الدخول والمدفوعات.",
+"h8_": "٩. حذف بياناتك",
 "p8": "يمكنك حذف حسابك في أي وقت من الإعدادات ← الحساب ← حذف الحساب. يُحذف الحساب وتقدّمه المحفوظ على خوادمنا فوراً. ويمكنك مسح البيانات المحفوظة على جهازك بحذف التطبيق.",
-"h9_": "٩. الأطفال",
+"h9_": "١٠. الأطفال",
 "p9": "MARS غير موجّه للأطفال دون 13 عاماً، ولا نجمع بياناتهم عن قصد.",
-"h10_": "١٠. التغييرات",
+"h10_": "١١. التغييرات",
 "p10": "إذا غيّرنا هذه السياسة نحدّث التاريخ أعلاه، ونخبرك داخل التطبيق إن كان التغيير جوهرياً.",
-"h11_": "١١. تواصل معنا",
+"h11_": "١٢. تواصل معنا",
 "c_h": "طلبات الخصوصية",
-"c1": "<strong>البريد الإلكتروني:</strong> <a href=\"mailto:naif@rqn.sa\">naif@rqn.sa</a>"
+"c1": "<strong>البريد الإلكتروني:</strong> <a href=\"mailto:naif@rqn.sa\">naif@rqn.sa</a>",
+"tsub": "٦. الاشتراكات",
+"hsub": "٦. الاشتراكات",
+"psub": "يتوفّر MARS باشتراك شهري أو سنوي. تتم عملية الشراء والدفع بالكامل عبر Apple App Store أو Google Play، ولا نرى بيانات بطاقتك أو وسيلة دفعك. نستلم فقط حالة اشتراكك (نوعه وتاريخ تجديده أو انتهائه) لنفعّل لك الميزات. يتجدّد الاشتراك تلقائياً ما لم تلغه قبل نهاية الفترة الحالية بـ 24 ساعة على الأقل، ويمكنك إدارته أو إلغاؤه من إعدادات حسابك في App Store أو Google Play."
 }, en:{}};
 document.querySelectorAll('[data-t]').forEach(e => T.en[e.dataset.t] ??= e.innerHTML);
 const label = document.getElementById('lang-label');
